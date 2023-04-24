@@ -1,26 +1,35 @@
 import './App.css'
+import AddExercise from './components/addExercise'
 import ExerciseCard from './components/exerciseCard'
 import Header from "./components/header"
+import exerciseCards from './exampleData'
 
 function App() {
   
   return (
-    <>
-      <section>
+    
+    <div className='App'>
+      <section className='AppHeader'>
         <Header />
 
       </section>
         
-      <section>
+      <section className='AppBody'>
 
-        <div>
-          Agregar tarjeta de ejercicios
-        </div>
-
-        <div>
-          <ExerciseCard />
-          <ExerciseCard />
-          <ExerciseCard />
+        {exerciseCards.length > 0 ? (
+            exerciseCards.map( (exerciseCard,idx) => (  
+              <ExerciseCard 
+                exerciseCard={exerciseCard}
+                key={idx}
+              />
+            ))  
+        ):(
+            <div>
+              AGREGA UN SET DE EJERCICIOS
+            </div>
+        )}
+        <div className='addSet'>
+          Add a new set
         </div>
 
 
@@ -28,7 +37,7 @@ function App() {
       </section>
       
       
-    </>
+    </div>
   )
 }
 

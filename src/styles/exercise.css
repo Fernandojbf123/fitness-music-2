@@ -1,0 +1,21 @@
+.exercise {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    justify-content: space-evenly;
+}
+
+
+.exerciseName, .exerciseDuration, .exerciseDel{
+    flex: 30%;
+    text-align: center;
+}
+
+.exerciseName div{
+    width: 80%;
+    margin: auto;
+    text-align: left;
+    border: 1px solid salmon;
+}

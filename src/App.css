@@ -2,5 +2,36 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html{
+  height: 100%;
+  background-color: aqua;
+}
+
+.App {
+  padding: 50px;
+  width: 100%;
+  min-height: 100%;
+  height: auto;
+  background-color: aqua;
+  margin: auto;
+}
+
+.AppHeader .AppBody {
+  width: 100%;
+}
+
+.addSet {
+  width: 100%;
+  text-align: right;
   border: 2px solid blue;
+}
+
+@media (min-width:450px){
+
+  .App{
+    width: 50%;
+    height: 100%;
+  }
 }
