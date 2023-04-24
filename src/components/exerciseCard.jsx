@@ -3,12 +3,12 @@ import "../styles/exerciseCard.css"
 import AddExercise from './addExercise';
 import Exercise from './exercise'
 
-const ExerciseCard = ({exerciseCard,key}) => {
+const ExerciseCard = ({exerciseCard}) => {
 
     let {num, exercisesData} = exerciseCard;
 
   return (
-    <div className='exerciseCard' key={key}>
+    <div className='exerciseCard'>
     
         <div className='cardHeader'>
 
@@ -33,7 +33,6 @@ const ExerciseCard = ({exerciseCard,key}) => {
                         key={idx}
                         exerciseData={exercise}
                     />
-
                 ))  
             ):(
                 <AddExercise />

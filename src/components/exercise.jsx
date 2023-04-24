@@ -1,14 +1,14 @@
 import React from 'react'
 import "../styles/exercise.css"
 
-const Exercise = ({exerciseData,key}) => {
+const Exercise = ({exerciseData}) => {
 
 
     let {name, duration } = exerciseData
 
  return (
 
-    <div className='exercise' key={key}>
+    <div className='exercise'>
        <div className='exerciseName'>
             <div>{name}</div>
        </div>

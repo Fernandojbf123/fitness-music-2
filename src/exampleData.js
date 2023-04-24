@@ -52,6 +52,18 @@ let exerciseCards = [
           name: "Descanso1",
           duration: "90",
         },
+        {
+          name: "Descanso1",
+          duration: "90",
+        },
+        {
+          name: "Descanso1",
+          duration: "90",
+        },
+        {
+          name: "Descanso1",
+          duration: "90",
+        },
       ]
     }
   ]
