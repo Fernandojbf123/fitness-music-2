@@ -1,5 +1,6 @@
 .exerciseCard {
-    border: 2px solid red;
+    background-color: var(--cardbgcolor);
+    border-radius: 8px;
     margin-top: 5px;
     display: flex;
     flex-direction: column;

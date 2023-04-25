@@ -4,12 +4,12 @@
   box-sizing: border-box;
   --bgcolor: rgb(202, 213, 221);
   --btncolor: rgb(128, 59, 255);
+  --cardbgcolor: rgb(188, 194, 199);
   --btncolorhover: rgb(108, 29, 255);
   --btndelcolor: rgb(124, 31, 31);
   --btndelcolorhover: rgb(83, 9, 9);
-  --exercisebgcolor: rgb(164, 172, 185);
+  --exercisebgcolor: rgb(218, 215, 223);
   --barcolor: rgb(168, 122, 255);
-
   font-family: 'Lato';
   font-size: 1.1rem;
   color: rgb(37, 36, 36);
