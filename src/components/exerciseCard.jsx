@@ -25,6 +25,7 @@ const ExerciseCard = ({exerciseCard}) => {
 
         </div>
             
+
         <div className='cardBody'>
 
             {exercisesData.length > 0 ? (
@@ -39,9 +40,7 @@ const ExerciseCard = ({exerciseCard}) => {
             )}
                 
 
-            <div className='addMore'>
-                + 1
-            </div>
+            <button className='btn addMore'>ADD EXERCISE</button>
         </div>
       
     </div>

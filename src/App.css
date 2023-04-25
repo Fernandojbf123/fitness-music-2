@@ -2,19 +2,31 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  --bgcolor: rgb(202, 213, 221);
+  --btncolor: rgb(128, 59, 255);
+  --btncolorhover: rgb(108, 29, 255);
+  --btndelcolor: rgb(124, 31, 31);
+  --btndelcolorhover: rgb(83, 9, 9);
+  --exercisebgcolor: rgb(164, 172, 185);
+  --barcolor: rgb(168, 122, 255);
+
+  font-family: 'Lato';
+  font-size: 1.1rem;
+  color: rgb(37, 36, 36);
+  font-weight: 700;
 }
 
 html{
   height: 100%;
-  background-color: aqua;
+  background-color: var(--bgcolor);
 }
 
 .App {
-  padding: 50px;
+  padding:0.7rem;
   width: 100%;
   min-height: 100%;
   height: auto;
-  background-color: aqua;
+  background-color: var(--bgcolor);
   margin: auto;
 }
 
@@ -28,6 +40,38 @@ html{
   border: 2px solid blue;
 }
 
+.btn {
+  width: 80px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  padding: 2px;
+  background-color: var(--btncolor);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  
+}
+
+.btn:hover{
+  background-color: var(--btncolorhover);
+}
+
+.btnDel{
+  background-color: var(--btndelcolor);
+  cursor: pointer;
+  color: white;
+  padding: 3px;
+  border-radius: 4px;
+  height: 35px;
+
+}
+
+.btnDel:hover{
+  background-color: var(--btndelcolorhover);
+}
+
 @media (min-width:450px){
 
   .App{
@@ -35,3 +79,4 @@ html{
     height: 100%;
   }
 }
+

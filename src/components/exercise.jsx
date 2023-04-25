@@ -13,11 +13,11 @@ const Exercise = ({exerciseData}) => {
             <div>{name}</div>
        </div>
        <div className='exerciseDuration'>
-            {duration}
+         <div>{duration}</div>
        </div>
        
        <div className='exerciseDel'>
-        X
+         <button className='btnDel'>X</button>
        </div>
 
     </div>

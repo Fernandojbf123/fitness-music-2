@@ -8,14 +8,36 @@
 }
 
 
-.exerciseName, .exerciseDuration, .exerciseDel{
-    flex: 30%;
+.exerciseName{
+    flex: 70%;
+    text-align: center;
+    
+}
+.exerciseDuration{
+    flex: 20%;
+    text-align: center;
+}
+.exerciseDel{
+    flex: 10%;
     text-align: center;
 }
 
 .exerciseName div{
-    width: 80%;
+    width: 90%;
     margin: auto;
     text-align: left;
-    border: 1px solid salmon;
+    background-color: var(--exercisebgcolor);
+    padding: 3px;
+    border-radius: 4px;
+  
 }
+
+.exerciseDuration div{
+    width: 40px;
+    margin: auto;
+    text-align: center;
+    background-color: var(--exercisebgcolor);
+    padding: 3px;
+    border-radius: 4px;
+}
+
