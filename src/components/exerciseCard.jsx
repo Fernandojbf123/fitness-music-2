@@ -3,9 +3,9 @@ import "../styles/exerciseCard.css"
 import AddExercise from './addExercise';
 import Exercise from './exercise'
 
-const ExerciseCard = ({exerciseCard}) => {
+const ExerciseCard = ({exerciseCard, handleEditCard, handleAddExercise}) => {
 
-    let {num, exercisesData} = exerciseCard;
+    let {numberOfSet, exercisesData} = exerciseCard;
 
   return (
     <div className='exerciseCard'>
@@ -16,7 +16,7 @@ const ExerciseCard = ({exerciseCard}) => {
             </div>
 
             <div className='cardHeaderName'>
-                SET Nº {num}
+                SET Nº {numberOfSet}
             </div>
         
             <div className='cardHeaderBtn'>
@@ -32,7 +32,10 @@ const ExerciseCard = ({exerciseCard}) => {
                 exercisesData.map( (exercise,idx) => (
                     <Exercise 
                         key={idx}
+                        numberOfSet={numberOfSet} //set number
+                        exerciseNumber={idx}
                         exerciseData={exercise}
+                        handleEditCard={handleEditCard}
                     />
                 ))  
             ):(
@@ -40,7 +43,11 @@ const ExerciseCard = ({exerciseCard}) => {
             )}
                 
 
-            <button className='btn addMore'>ADD EXERCISE</button>
+            <button 
+                className='btn addMore'
+                onClick={e => handleAddExercise(numberOfSet-1)}
+                >ADD EXERCISE
+            </button>
         </div>
       
     </div>

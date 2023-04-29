@@ -1,26 +1,70 @@
 import React from 'react'
 import "../styles/exercise.css"
+import { useState, useEffect } from 'react';
 
-const Exercise = ({exerciseData}) => {
+
+const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) => {
+
+ let [name, setName] = useState(exerciseData.name);
+ let [duration, setDuration] = useState(exerciseData.duration);
+ 
+ function handleDeleteExercise (e) {
+  e.preventDefault();
+  console.log(e.target)
+  console.log("presionando borrar")
+ }
+
+ useEffect ( () => {
+
+  let newExerciseData = 
+    {
+      name:name,
+      duration:duration,
+    }
+  handleEditCard(numberOfSet, exerciseNumber,newExerciseData)
+ },[name])
+
+ useEffect ( () => {
+
+  let newExerciseData = 
+  {
+    name:name,
+    duration:duration,
+  }
+
+  handleEditCard(numberOfSet, exerciseNumber, newExerciseData)
+ },[duration])
 
 
-    let {name, duration } = exerciseData
 
  return (
 
-    <div className='exercise'>
+    <form className='exercise'>
        <div className='exerciseName'>
-            <div>{name}</div>
+            <input
+              type='text'
+              placeholder='add an exercise'
+              value={name}
+              onChange={ e => setName(e.target.value)}
+            />
        </div>
        <div className='exerciseDuration'>
-         <div>{duration}</div>
+         <input
+            type='number'
+            placeholder="30"
+            value={duration}
+            onChange={ e => setDuration(+e.target.value)}
+         />
        </div>
        
        <div className='exerciseDel'>
-         <button className='btnDel'>X</button>
+         <button 
+          className='btnDel'
+          onClick={e => handleDeleteExercise(e)}
+         >X</button>
        </div>
 
-    </div>
+    </form>
   )
   
 }
