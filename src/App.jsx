@@ -2,6 +2,7 @@ import './App.css'
 import AddExercise from './components/addExercise'
 import ExerciseCard from './components/exerciseCard'
 import Header from "./components/header"
+import Modal from './components/modal'
 import exerciseCard1 from './exampleData'
 
 import { useState, useEffect } from 'react'
@@ -20,6 +21,7 @@ function App() {
   let [currentSet, setCurrentSet] = useState(0);
   let [numberOfExercises, setNumberOfExercises] = useState(1);
   let [currentExercise, setCurrentExercise] = useState(0)
+  let [currentExerciseName, setCurrentExerciseName] = useState("");
   
   let [timeLeft, setTimeLeft] = useState();
   let [timeOutID, setTimeOutID] = useState();
@@ -57,81 +59,12 @@ function App() {
     }
   },[isAppRunning])
 
-  // useEffect (() => {
-  //   const workingOut = clockRunning()
-  //   setTimeOutID(workingOut)
-  //   let exerciseName='';
-  //   if (isFirstSet) {
-  //     if (timeLeft === 10) {
-  //       messageReader(`Tu primer ejercicio es ${exerciseCards[0].exercisesData[0].name}`)
-  //     }
-  //     else if (timeLeft <= 5 && timeLeft>=1){
-  //       messageReader(timeLeft)
-  //     }
-  //     else if (timeLeft === 0) {
-  //       setTimeLeft(exerciseCards[0].exercisesData[0].duration)
-  //       setIsFirstSet(false)
-  //       messageReader(`A darle con todo tigre!. Tienes ${exerciseCards[0].exercisesData[0].duration} segundos por delante`)
-  //       setIsExercise(true)
-  //     }
-  //   }
-  //   else {
-  //     //AGREGAR DISPLAY DE LOS NÚMEROS
-  //     //AGREGAR QUE SUENE LA MUSICA
-  //     //AGREGAR QUE LEA LOS MENSAJES
-
-  //     if (timeLeft <= 5 && timeLeft >=1){
-  //       messageReader(timeLeft)
-  //     }
-  //     else if (timeLeft===0 & isExercise){
-  //       //Start preparation time
-        
-  //       setIsExercise(false)
-  //       let prepTime = exerciseCards[currentSet].exercisesData[currentExercise].preparation;
-  //       messageReader(`Terminaste este ejercicio. Tienes ${prepTime} segundos para prepararte`)
-  //       if (currentExercise+1 < tmpNumberOfExercises) {
-  //         setCurrentExercise(currentExercise+1) 
-  //         setTimeLeft(prepTime)
-  //         exerciseName = exerciseCards[currentSet].exercisesData[currentExercise].name
-  //         messageReader(`Tu siguiente ejercicio es ${exerciseName}`)
-  //       }
-  //       else{
-  //         setCurrentSet(currentSet+1)
-  //         setCurrentExercise(0)
-  //         if (currentSet+1<numberOfSets){
-  //           messageReader(`Excelente!, terminaste este set de ejercicios. Avanzando al siguiente`)
-  //           console.log("VINE A AVANZAR AL SIGUIENTE SET")
-  //         }
-  //         else{
-  //           clearTimeout(workingOut)
-  //           messageReader("Felicidades, has terminado toda la rutina de ejercicios")
-  //           setIsAppRunning(false)
-  //           setTimeLeft(0)
-  //           console.log("VINE AL FINAL DE LA RUTINA DE EJERCICIOS")
-  //         }
-  //       }
-  //     }
-  //     else if (timeLeft === 0 & !isExercise){
-  //       //Start next exercise
-  //       console.log("AVANZO AL SIGUIENTE EJERCICIO")
-  //       console.log(`current set = ${currentSet}`)
-  //       console.log(`current exercise = ${currentExercise+1}`)
-  //       setTimeLeft(exerciseCards[currentSet].exercisesData[currentExercise].duration)
-  //       setIsExercise(true)
-  //     } 
-
-  //   }
-  // },[timeLeft])
-
-
- 
-
-
-  useEffect ( () => {
+ useEffect ( () => {
     const workingOut = clockRunning()
     setTimeOutID(workingOut)
     let nextExercise
     let prepTime
+    setCurrentExerciseName(exerciseCards[currentSet].exercisesData[currentExercise].name)
 
     if (currentSet === 0 & currentExercise === 0 & isFirstRead){
         console.log("A darle con todo tigre")
@@ -163,9 +96,8 @@ function App() {
             prepTime = exerciseCards[currentSet+1].exercisesData[0].preparation;
             console.log(`Felicidades. Terminaste este set. Avanzando al siguiente set. Tu siguiente ejercicio es ${nextExercise} y tienes ${prepTime} segundos de preparacion`)
             setTimeLeft(prepTime)
-            let numberOfExer = exerciseCards[currentSet+1].exercisesData.length;
-            setNumberOfExercises(numberOfExer)
-            console.log(`Cantidad de ejercicios en el set ${currentSet+1} = ${numberOfExer}`)
+            let tmpNumberOfExercises = exerciseCards[currentSet+1].exercisesData.length;
+            setNumberOfExercises(tmpNumberOfExercises)
           }
           else {
             console.log(`Felicidades terminaste todos tus sets de ejercicios`)
@@ -332,6 +264,11 @@ function App() {
 
         </div>
 
+        {isAppRunning && 
+          <Modal 
+            timeLeft={timeLeft}
+            currentExerciseName={currentExerciseName}/>
+        }
       </section>
       
       
