@@ -14,7 +14,7 @@ function App() {
   let [exerciseCards,setExerciseCards] = useState(exerciseCard1);
   
   let [isAppRunning, setIsAppRunning] = useState(false);
-  let [isFirstSet, setIsFirstSet] = useState(true);
+  let [isFirstRead, setIsFirstRead] = useState(true);
   
   let [numberOfSets, setNumberOfSets] = useState(1);
   let [currentSet, setCurrentSet] = useState(0);
@@ -51,7 +51,6 @@ function App() {
   useEffect ( () => {
     if (isAppRunning){
       messageReader(`Prepárate para iniciar tu rutina de ejercicio. Tienes ${timeLeft} segundos`)
-      
     }
     else{
       messageReader("Deteniendo rutina de ejercicios")
@@ -125,60 +124,65 @@ function App() {
   // },[timeLeft])
 
 
-  let tmpCurrentSet = 0;
-  let tmpCurrentExercise = 0;
-  let tmpNumberOfExercises = numberOfExercises;
+ 
+
 
   useEffect ( () => {
     const workingOut = clockRunning()
     setTimeOutID(workingOut)
+    let nextExercise
+    let prepTime
 
-    let tmpDuration_old = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].duration;
-    let tmpPreparation_old = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].preparation;
-    let tmpName_old = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].name;
+    if (currentSet === 0 & currentExercise === 0 & isFirstRead){
+        console.log("A darle con todo tigre")
+        setIsFirstRead(false)
+    }
 
-    if (tmpCurrentExercise === 0 & isFirstSet){
-      //Estoy inciiando por primera vez
-      console.log(`Iniciando el set ${tmpCurrentSet}`)
-      console.log(`Tienes ${timeLeft} segundos de preparación.`)
-      console.log(`A darle con todo tigre!. Tu primer ejercicio es ${tmpName_old} por ${tmpDuration_old} segundos`)
-      console.log(`faltan ${timeLeft} segundos`)
-      setIsExercise(false)
+    if (timeLeft >= 0 & timeLeft <= 10){
+      if (timeLeft === 10) {
+        console.log(`quedan ${timeLeft} segundos`)
+      }
+      else if (timeLeft >0 & timeLeft<= 5){
+        console.log(`Estoy en la cuenta regresiva ${timeLeft}`)
+      }
+      else if (timeLeft === 0 & isExercise){ //exercise finished
+        setCurrentExercise(currentExercise+1)
+        setIsExercise(false)
 
-      if (timeLeft === 0 & !isExercise){
-        console.log(`Esto terminando el tiempo de preparacion`)
+        if (currentExercise+1<numberOfExercises){ //next exercise
+          nextExercise = exerciseCards[currentSet].exercisesData[currentExercise+1].name;
+          prepTime = exerciseCards[currentSet].exercisesData[currentExercise+1].preparation;
+          console.log(`Tu siguiente ejercicio es ${nextExercise} y tienes ${prepTime} segundos de preparacion`)
+          setTimeLeft(prepTime)
+        }
+        else if (currentExercise+1 >= numberOfExercises){ //next set
+          setCurrentSet(currentSet+1)
+          setCurrentExercise(0)
+          if (currentSet+1 < numberOfSets){   
+            nextExercise = exerciseCards[currentSet+1].exercisesData[0].name;
+            prepTime = exerciseCards[currentSet+1].exercisesData[0].preparation;
+            console.log(`Felicidades. Terminaste este set. Avanzando al siguiente set. Tu siguiente ejercicio es ${nextExercise} y tienes ${prepTime} segundos de preparacion`)
+            setTimeLeft(prepTime)
+            let numberOfExer = exerciseCards[currentSet+1].exercisesData.length;
+            setNumberOfExercises(numberOfExer)
+            console.log(`Cantidad de ejercicios en el set ${currentSet+1} = ${numberOfExer}`)
+          }
+          else {
+            console.log(`Felicidades terminaste todos tus sets de ejercicios`)
+            setTimeLeft(0)
+            handleStop()
+          }
+        }
+      }
+      else if (timeLeft === 0 & !isExercise){ //prep time finished
+        let ExerciseTime = exerciseCards[currentSet].exercisesData[currentExercise].duration;
+        setTimeLeft(ExerciseTime)
         setIsExercise(true)
-        setTimeLeft(tmpDuration_old)
-      }
-      else if (timeLeft === 0 & isExercise){
-        console.log(`Esto terminando el tiempo de ejercicio`)
-        //verificar que exista el proximo ejercicio
-        tmpCurrentExercise++
-        if(tmpCurrentExercise < tmpNumberOfExercises){  
-          console.log(`Felicidades terminaste ${tmpName_old}. Tienes ${tmpPreparation_old} segundos de preparación.`)
-          setTimeLeft(tmpPreparation_old)
-          tmpName = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].name;
-          tmpDuration = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].duration;        
-          console.log(`Tu siguiente ejercicio es ${tmpName} por ${tmpDuration}`)
-        }
-        else{
-          //verificar que existe el proximo set
-          tmpCurrentSet++
-          if(tmpCurrentSet < numberOfSets){
-            console.log(`Felicidades terminaste el set ${tmpCurrentSet-1}`)
-            setTimeLeft(tmpPreparation_old)
-            tmpCurrentExercise=0;
-            tmpNumberOfExercises=exerciseCards[tmpCurrentSet].exercisesData.length;
-          }
-          else{
-            console.log(`Felicidades terminates toda la rutina de ejercicio`)
-          }
-        }
       }
     }
-    else {
-      console.log("ESTO POR FUERA")
-    }
+  
+    console.log(timeLeft)
+   
   },[timeLeft]) 
 
  
@@ -236,6 +240,7 @@ function App() {
       setCurrentExercise(0)
       let tmpTimeLeft = exerciseCards[0].exercisesData[0].preparation;
       setTimeLeft(tmpTimeLeft)
+      setIsExercise(false)
     }
   }
 
