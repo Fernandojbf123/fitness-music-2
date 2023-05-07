@@ -21,7 +21,8 @@ const Header = ({exerciseCards, setExerciseCards}) => {
     let exercisesData = [{
       name: "",
       duration: 30,
-      preparation: 10
+      preparation: 10,
+      isValid: false
     }]
 
     setExerciseCards([...exerciseCards, {numberOfSet, exercisesData}])

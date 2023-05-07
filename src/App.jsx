@@ -14,19 +14,21 @@ function App() {
   let [exerciseCards,setExerciseCards] = useState(exerciseCard1);
   
   let [isAppRunning, setIsAppRunning] = useState(false);
+  let [isFirstSet, setIsFirstSet] = useState(true);
   
   let [numberOfSets, setNumberOfSets] = useState(1);
   let [currentSet, setCurrentSet] = useState(0);
   let [numberOfExercises, setNumberOfExercises] = useState(1);
   let [currentExercise, setCurrentExercise] = useState(0)
   
-  
-  
   let [timeLeft, setTimeLeft] = useState();
   let [timeOutID, setTimeOutID] = useState();
 
   let [isExercise,setIsExercise] = useState(true);
-  
+
+  let [areFieldsEmpty, setAreFieldsEmpty] = useState([true]);
+
+  let msg = startMsgReader()
 
   useEffect ( () => {
     if ('speechSynthesis' in window) {
@@ -43,58 +45,143 @@ function App() {
       //CREAR EL EXERCISE CARD nº 1
       return
     }
-    
     setNumberOfSets(exerciseCards.length)
-    
   },[exerciseCards])
 
   useEffect ( () => {
-    
     if (isAppRunning){
-      messageReader("iniciando rutina de ejercicios")
+      messageReader(`Prepárate para iniciar tu rutina de ejercicio. Tienes ${timeLeft} segundos`)
+      
     }
     else{
       messageReader("Deteniendo rutina de ejercicios")
     }
   },[isAppRunning])
 
-  useEffect (() => {
+  // useEffect (() => {
+  //   const workingOut = clockRunning()
+  //   setTimeOutID(workingOut)
+  //   let exerciseName='';
+  //   if (isFirstSet) {
+  //     if (timeLeft === 10) {
+  //       messageReader(`Tu primer ejercicio es ${exerciseCards[0].exercisesData[0].name}`)
+  //     }
+  //     else if (timeLeft <= 5 && timeLeft>=1){
+  //       messageReader(timeLeft)
+  //     }
+  //     else if (timeLeft === 0) {
+  //       setTimeLeft(exerciseCards[0].exercisesData[0].duration)
+  //       setIsFirstSet(false)
+  //       messageReader(`A darle con todo tigre!. Tienes ${exerciseCards[0].exercisesData[0].duration} segundos por delante`)
+  //       setIsExercise(true)
+  //     }
+  //   }
+  //   else {
+  //     //AGREGAR DISPLAY DE LOS NÚMEROS
+  //     //AGREGAR QUE SUENE LA MUSICA
+  //     //AGREGAR QUE LEA LOS MENSAJES
+
+  //     if (timeLeft <= 5 && timeLeft >=1){
+  //       messageReader(timeLeft)
+  //     }
+  //     else if (timeLeft===0 & isExercise){
+  //       //Start preparation time
+        
+  //       setIsExercise(false)
+  //       let prepTime = exerciseCards[currentSet].exercisesData[currentExercise].preparation;
+  //       messageReader(`Terminaste este ejercicio. Tienes ${prepTime} segundos para prepararte`)
+  //       if (currentExercise+1 < tmpNumberOfExercises) {
+  //         setCurrentExercise(currentExercise+1) 
+  //         setTimeLeft(prepTime)
+  //         exerciseName = exerciseCards[currentSet].exercisesData[currentExercise].name
+  //         messageReader(`Tu siguiente ejercicio es ${exerciseName}`)
+  //       }
+  //       else{
+  //         setCurrentSet(currentSet+1)
+  //         setCurrentExercise(0)
+  //         if (currentSet+1<numberOfSets){
+  //           messageReader(`Excelente!, terminaste este set de ejercicios. Avanzando al siguiente`)
+  //           console.log("VINE A AVANZAR AL SIGUIENTE SET")
+  //         }
+  //         else{
+  //           clearTimeout(workingOut)
+  //           messageReader("Felicidades, has terminado toda la rutina de ejercicios")
+  //           setIsAppRunning(false)
+  //           setTimeLeft(0)
+  //           console.log("VINE AL FINAL DE LA RUTINA DE EJERCICIOS")
+  //         }
+  //       }
+  //     }
+  //     else if (timeLeft === 0 & !isExercise){
+  //       //Start next exercise
+  //       console.log("AVANZO AL SIGUIENTE EJERCICIO")
+  //       console.log(`current set = ${currentSet}`)
+  //       console.log(`current exercise = ${currentExercise+1}`)
+  //       setTimeLeft(exerciseCards[currentSet].exercisesData[currentExercise].duration)
+  //       setIsExercise(true)
+  //     } 
+
+  //   }
+  // },[timeLeft])
+
+
+  let tmpCurrentSet = 0;
+  let tmpCurrentExercise = 0;
+  let tmpNumberOfExercises = numberOfExercises;
+
+  useEffect ( () => {
     const workingOut = clockRunning()
     setTimeOutID(workingOut)
-    console.log(`Timeleft = ${timeLeft} currentSet = ${currentSet} currentExercise = ${currentExercise}`)
-    //AGREGAR DISPLAY DE LOS NÚMEROS
-    //AGREGAR QUE SUENE LA MUSICA
-    //AGREGAR QUE LEA LOS MENSAJES
 
-    if (currentSet>=numberOfSets){
-      console.log("TERMINASTE LOS SETS")
-      setIsAppRunning(false)
-      clearTimeout(workingOut)
-      return
-    }
-    if (currentExercise>=numberOfExercises){
-      console.log("Terminaste los ejercicios, avanza al siguiente set")
-      setCurrentSet(currentSet+1)
-      setCurrentExercise(0)
-    }
+    let tmpDuration_old = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].duration;
+    let tmpPreparation_old = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].preparation;
+    let tmpName_old = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].name;
 
-    if (timeLeft===0 & isExercise){
-      //preparation time
+    if (tmpCurrentExercise === 0 & isFirstSet){
+      //Estoy inciiando por primera vez
+      console.log(`Iniciando el set ${tmpCurrentSet}`)
+      console.log(`Tienes ${timeLeft} segundos de preparación.`)
+      console.log(`A darle con todo tigre!. Tu primer ejercicio es ${tmpName_old} por ${tmpDuration_old} segundos`)
+      console.log(`faltan ${timeLeft} segundos`)
       setIsExercise(false)
-      setTimeLeft(exerciseCards[currentSet].exercisesData[currentExercise].preparation)
+
+      if (timeLeft === 0 & !isExercise){
+        console.log(`Esto terminando el tiempo de preparacion`)
+        setIsExercise(true)
+        setTimeLeft(tmpDuration_old)
+      }
+      else if (timeLeft === 0 & isExercise){
+        console.log(`Esto terminando el tiempo de ejercicio`)
+        //verificar que exista el proximo ejercicio
+        tmpCurrentExercise++
+        if(tmpCurrentExercise < tmpNumberOfExercises){  
+          console.log(`Felicidades terminaste ${tmpName_old}. Tienes ${tmpPreparation_old} segundos de preparación.`)
+          setTimeLeft(tmpPreparation_old)
+          tmpName = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].name;
+          tmpDuration = exerciseCards[tmpCurrentSet].exercisesData[tmpCurrentExercise].duration;        
+          console.log(`Tu siguiente ejercicio es ${tmpName} por ${tmpDuration}`)
+        }
+        else{
+          //verificar que existe el proximo set
+          tmpCurrentSet++
+          if(tmpCurrentSet < numberOfSets){
+            console.log(`Felicidades terminaste el set ${tmpCurrentSet-1}`)
+            setTimeLeft(tmpPreparation_old)
+            tmpCurrentExercise=0;
+            tmpNumberOfExercises=exerciseCards[tmpCurrentSet].exercisesData.length;
+          }
+          else{
+            console.log(`Felicidades terminates toda la rutina de ejercicio`)
+          }
+        }
+      }
     }
-  
-    else if (timeLeft === 0 & !isExercise){
-      //next exercise
-      let tmpCurrentExercise = currentExercise+1;
-      setIsExercise(true)
-      setTimeLeft(exerciseCards[currentSet].exercisesData[currentExercise].duration)
-      setCurrentExercise(currentExercise+1);
+    else {
+      console.log("ESTO POR FUERA")
     }
-  },[timeLeft])
+  },[timeLeft]) 
 
  
-  let msg = startMsgReader()
 
   function startMsgReader () {
     let msg = new SpeechSynthesisUtterance();
@@ -125,18 +212,31 @@ function App() {
   }
   
   function handleStart () {
-    setIsAppRunning(true)
-    console.log("PRESIONO START")
+    console.log("PRESIONO START")  
+    let allFieldsValid = true;
+    //review that all fields are ok
     
-    //AGREGAR VALIDADOR DE CAMPOS EN BLANCO Y DE SETS en BLANCO
-    //AGREGAR QUE SE ACTIVE EL MODAL
-    
-    setNumberOfSets(exerciseCards.length)
-    setCurrentSet(0)
-    setNumberOfExercises(exerciseCards[0].exercisesData.length)
-    setCurrentExercise(0)
-    let tmpTimeLeft = exerciseCards[0].exercisesData[0].duration;
-    setTimeLeft(tmpTimeLeft)
+    for (let iset = 0; iset < numberOfSets; iset++){
+      let tmpNumberOfExercises = exerciseCards[iset].exercisesData.length;
+      for (let iexercise = 0; iexercise < tmpNumberOfExercises; iexercise++){
+        if(!exerciseCards[iset]?.exercisesData[iexercise]?.isValid){
+          allFieldsValid = false;
+        } 
+      }
+    }
+    if (!allFieldsValid){
+      //ADD ERROR MESSAGE
+      console.log("HAY CAMPOS EN BLANCO")
+    }
+    else {
+      setIsAppRunning(true)
+      setNumberOfSets(exerciseCards.length)
+      setCurrentSet(0)
+      setNumberOfExercises(exerciseCards[0].exercisesData.length)
+      setCurrentExercise(0)
+      let tmpTimeLeft = exerciseCards[0].exercisesData[0].preparation;
+      setTimeLeft(tmpTimeLeft)
+    }
   }
 
   function handleStop () {
@@ -165,20 +265,24 @@ function App() {
     let newExercisesData = {
       name: "",
       duration: 30,
-      preparation: 10
+      preparation: 10,
+      isValid: false,
     }
-
     tmp[numberOfSet].exercisesData.push(newExercisesData)
-
-    console.log(tmp)
-    setExerciseCards([...tmp])
+    setExerciseCards([...tmp])    
   }
 
   function handleEditCard (currentSet, currentExercise, newExerciseData) {
   //EDIT A CARD
+
     let tmp = [...exerciseCards]
     tmp[currentSet-1].exercisesData[currentExercise].name=newExerciseData.name;
     tmp[currentSet-1].exercisesData[currentExercise].duration=newExerciseData.duration;
+    tmp[currentSet-1].exercisesData[currentExercise].isValid=newExerciseData.isValid;
+    if (!newExerciseData.isValid) {
+      //AGREGA MENSAJE DE ERROR
+      console.log("HAY CAMPOS INCORRECTOS")
+    }
     setExerciseCards([...tmp])
   }
 

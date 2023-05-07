@@ -6,6 +6,7 @@ let exerciseCard1 = [
           name: "",
           duration: 30,
           preparation: 10,
+          isValid: false,
         },
       ]
   },

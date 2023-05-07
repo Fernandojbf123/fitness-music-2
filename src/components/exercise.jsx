@@ -15,23 +15,36 @@ const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) =
  }
 
  useEffect ( () => {
-
   let newExerciseData = 
     {
       name:name,
       duration:duration,
+      preparation: 10,
+    }
+    if(newExerciseData.name !== "" & newExerciseData.duration >= 5){
+      newExerciseData.isValid=true
+    }
+    else{
+      newExerciseData.isValid=false
     }
   handleEditCard(numberOfSet, exerciseNumber,newExerciseData)
  },[name])
 
  useEffect ( () => {
-
   let newExerciseData = 
   {
     name:name,
     duration:duration,
+    preparation: 10,
   }
-
+  
+  console.log(newExerciseData.duration)
+  if(newExerciseData.name !== "" & newExerciseData.duration >= 5){
+    newExerciseData.isValid=true
+  }
+  else{
+    newExerciseData.isValid=false
+  }
   handleEditCard(numberOfSet, exerciseNumber, newExerciseData)
  },[duration])
 
