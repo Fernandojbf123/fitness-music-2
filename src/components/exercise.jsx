@@ -19,7 +19,7 @@ const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) =
     {
       name:name,
       duration:duration,
-      preparation: 10,
+      preparation: 20,
     }
     if(newExerciseData.name !== "" & newExerciseData.duration >= 5){
       newExerciseData.isValid=true
@@ -35,7 +35,7 @@ const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) =
   {
     name:name,
     duration:duration,
-    preparation: 10,
+    preparation: 20,
   }
   
   console.log(newExerciseData.duration)
@@ -48,11 +48,25 @@ const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) =
   handleEditCard(numberOfSet, exerciseNumber, newExerciseData)
  },[duration])
 
+function handleUp (e) {
+  e.preventDefault()
+ setDuration(duration+5);
+}
 
+function handleDown(e) {
+  e.preventDefault()
+  if (duration >5){ 
+    setDuration(duration-5);
+  }
+  else {
+    setDuration(5)
+  }
+}
 
  return (
 
     <form className='exercise'>
+      
        <div className='exerciseName'>
             <input
               type='text'
@@ -69,6 +83,12 @@ const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) =
             onChange={ e => setDuration(+e.target.value)}
          />
        </div>
+       
+       <div className='timerBtns'>
+        <button className='smallBtn' onClick={e => handleUp(e)}>+</button>
+        <button className='smallBtn' onClick={e => handleDown(e)}>-</button>
+       </div>
+       
        
        <div className='exerciseDel'>
          <button 
