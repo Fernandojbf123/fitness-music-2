@@ -3,17 +3,13 @@ import "../styles/exercise.css"
 import { useState, useEffect } from 'react';
 
 
-const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) => {
+const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard, handleDeleteExercise}) => {
 
  let [name, setName] = useState(exerciseData.name);
  let [duration, setDuration] = useState(exerciseData.duration);
- 
- function handleDeleteExercise (e) {
-  e.preventDefault();
-  console.log(e.target)
-  console.log("presionando borrar")
- }
+ let [isClicked, setIsClicked] = useState(false);
 
+ 
  useEffect ( () => {
   let newExerciseData = 
     {
@@ -38,7 +34,6 @@ const Exercise = ({numberOfSet, exerciseNumber, exerciseData, handleEditCard}) =
     preparation: 20,
   }
   
-  console.log(newExerciseData.duration)
   if(newExerciseData.name !== "" & newExerciseData.duration >= 5){
     newExerciseData.isValid=true
   }
@@ -92,8 +87,8 @@ function handleDown(e) {
        
        <div className='exerciseDel'>
          <button 
-          className='btnDel'
-          onClick={e => handleDeleteExercise(e)}
+          className="btnDel"
+          onClick={e => handleDeleteExercise(e, numberOfSet, exerciseNumber)}
          >X</button>
        </div>
 

@@ -14,6 +14,7 @@
   font-size: 1.1rem;
   color: rgb(37, 36, 36);
   font-weight: 700;
+  transition: all 0.2s ease-in-out;
 }
 
 html{
@@ -104,3 +105,6 @@ html{
   }
 }
 
+.clicked {
+  transform: scale(0.7);
+}

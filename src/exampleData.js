@@ -1,85 +1,41 @@
-let exerciseCard1 = [
-  {
-    numberOfSet: 1,
-    exercisesData: [
-        {
-          name: "",
-          duration: 30,
-          preparation: 20,
-          isValid: false,
-        },
-      ]
-  },
-]
+let initialData = {
+    sets: {
+      "set-1": {id: "set-1", title: "set 1", exercisesId: ["1-1", "1-2", "1-3","1-4","1-5"]},
+    },
+    exercisesData:{
+      "1-1": {id:"1-1", name: "Saltar la cuerda", duration: 90, preparation: 20, isValid: false},
+      "1-2": {id:"1-2", name: "Sentadilla", duration: 60, preparation: 20, isValid: false,},
+      "1-3": {id:"1-3", name: "Flexiones", duration: 45, preparation: 20, isValid: false,},
+      "1-4": {id:"1-4", name: "Plancha", duration: 45, preparation: 20, isValid: false,},
+      "1-5": {id:"1-5", name: "Descanso", duration: 90, preparation: 20, isValid: false,},
+    },
+    setsOrder: ["set-1"],
+
+    addExcercise: function (currentSet, newExerciseId) {
+      this.sets[currentSet].exercisesId.push(newExerciseId);
+      this.exercisesData[newExerciseId] = {
+        id: newExerciseId,
+        name: "",
+        duration: 30,
+        preparation: 20,
+        isValid: false,
+      }
+    },
+
+    addSet: function () {
+      let newSet = Object.keys(this.sets).length + 1;
+      let newKeyOfSet= `set-${newSet}`
+      let newExerciseId = `${newSet}-1`
+
+      this.sets[newKeyOfSet] = {
+        id: newKeyOfSet,
+        title: `set ${newSet}`,
+        exercisesId: []
+      }
+      this.addExcercise(newKeyOfSet,newExerciseId)
+      this.setsOrder.push(newKeyOfSet)
+    }
+}
 
 
-// let exerciseCard1 = [
-//     {
-//       num: 1,
-//       exercisesData: [
-//           {
-//             name: "sentadilla",
-//             duration: "30",
-//           },
-//           {
-//             name: "flexiones",
-//             duration: "45",
-//           },
-//           {
-//             name: "Descanso",
-//             duration: "90",
-//           },
-//         ]
-//     },
-//     {
-//       num: 2,
-//       exercisesData: [
-//         {
-//           name: "pecho",
-//           duration: "30",
-//         },
-//         {
-//           name: "escapula",
-//           duration: "45",
-//         },
-//         {
-//           name: "Flexion pica",
-//           duration: "30",
-//         },
-//         {
-//           name: "Descanso",
-//           duration: "90",
-//         },
-//       ]
-//     },
-//     {
-//       num: 3,
-//       exercisesData: [
-//         {
-//           name: "piernas",
-//           duration: "30",
-//         },
-//         {
-//           name: "cadera",
-//           duration: "45",
-//         },
-//         {
-//           name: "Descanso1",
-//           duration: "90",
-//         },
-//         {
-//           name: "Descanso1",
-//           duration: "90",
-//         },
-//         {
-//           name: "Descanso1",
-//           duration: "90",
-//         },
-//         {
-//           name: "Descanso1",
-//           duration: "90",
-//         },
-//       ]
-//     }
-//   ]
-export default exerciseCard1
+export {initialData}

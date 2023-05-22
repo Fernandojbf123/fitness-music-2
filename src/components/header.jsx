@@ -4,26 +4,27 @@ import ErrorMsg from './errorMsg'
 
 import "../styles/header.css"
 
-const Header = ({exerciseCards, setExerciseCards, checkIfInputsAreWriten, isErrorActive, setIsErrorActive, errorMsg, setErrorMsg}) => {
+const Header = ({data, setData, checkIfInputsAreWriten, isErrorActive, setIsErrorActive, errorMsg, setErrorMsg}) => {
 
-  const handleAddSet = () => {
+
+  let [isClicked, setIsClicked] = useState(false);
+
+  function handleAddSet () {
+    setIsClicked(true)
+      setTimeout ( () => {
+        setIsClicked(false)
+    },[200])
+    
     let allFieldsValid = checkIfInputsAreWriten();
-    let numberOfSets = exerciseCards.length;
     if (!allFieldsValid) {
       setErrorMsg("Llena todos los campos antes de agregar un nuevo set")
       setIsErrorActive(true)
       return
     }
-    let numberOfSet=numberOfSets+1;
-    let exercisesData = [{
-      name: "",
-      duration: 30,
-      preparation: 20,
-      isValid: false
-    }]
-    setExerciseCards([...exerciseCards, {numberOfSet, exercisesData}])    
-    setErrorMsg("")
-    setIsErrorActive(false)
+    let copy = {...data}
+    copy.addSet()
+    setData({...copy})
+    
   }
 
   return (
@@ -34,7 +35,9 @@ const Header = ({exerciseCards, setExerciseCards, checkIfInputsAreWriten, isErro
           isErrorActive={isErrorActive}/>
       </div>
       <div className='headerBtn'>
-        <button className='btn transparent' onClick={handleAddSet}>ADD SET</button>
+        <button 
+          className={`btn transparent ${isClicked && `clicked`}`}
+          onClick = {e => handleAddSet (e)}>ADD SET</button>
       </div>
     </div>
   )

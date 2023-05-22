@@ -18,18 +18,33 @@
 
 }
 
-.cardHeaderSpace, .cardHeaderName, .cardHeaderBtn{
+.cardHeaderSpace, .cardHeaderName{
   width: 100%;
   text-align: center;  
   color: white;
   font-size: 0.8rem;
 }
 
-.cardHeaderBtn div{
-    text-align: right !important;
-    color: white;
-    font-size: 0.8rem;
+.cardHeaderBtn{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
+
+.configImg {
+    width: 25px;   
+    height: 25px;
+    margin-top: 2px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* .configImg:hover {
+    transform: rotate(15deg) scale(1.1);
+} */
 
 .cardBody{
     display: flex;
@@ -45,6 +60,7 @@
     width: 90%;
     text-align: center;
     border-radius: 4px;
-
 }
+
+
 
