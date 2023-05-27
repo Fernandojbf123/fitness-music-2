@@ -53,7 +53,7 @@ let initialData = {
       
       for (let iexercise=0; iexercise<numberOfExercisesInCurrentSet;iexercise++){
         let newExerciseId = `${newSet}-${iexercise+1}`
-        let oldExerciseId = `${currentSet+1}-${iexercise+1}`
+        let oldExerciseId = this.sets[keyOfCurrentSet].exercisesId[iexercise]
         this.sets[keyOfNewSet].exercisesId.push(newExerciseId);
         this.exercisesData[newExerciseId] = this.exercisesData[oldExerciseId]
         this.exercisesData[newExerciseId].id = newExerciseId
