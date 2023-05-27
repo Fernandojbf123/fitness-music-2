@@ -18,11 +18,14 @@ const ExerciseCard = ({keyOfSet, numberOfSet, data, setData}) =>  {
         }
     },[data])
 
-    function handleClickConfig(e) {
+    function handleCopy(e) {
         setIsClicked(true)
         setTimeout ( () => {
             setIsClicked(false)
         },[200])
+        let copy = {...data}
+        copy.copySet(numberOfSet)
+        setData({...copy})
     }
 
     function handleAddExercise (e, keyOfSet) {
@@ -48,11 +51,11 @@ const ExerciseCard = ({keyOfSet, numberOfSet, data, setData}) =>  {
         
             <div className='cardHeaderBtn'>
                 <div>
-                    <img src={configImg} 
-                         alt="config buttom" 
-                         className={`configImg ${isClicked && "clicked"} `}
-                         onClick={e => handleClickConfig(e)}
-                    />
+                    <button
+                        className={`btn btncopy ${isClicked && "clicked"} `}
+                        onClick={e => handleCopy(e) }
+                        >Copy set
+                    </button>
                 </div>    
             </div>
 

@@ -49,10 +49,16 @@ function App() {
   useEffect ( () => {
     if (isAppRunning){
       messageReader(`Prepárate para iniciar tu rutina de ejercicio. Tienes ${timeLeft-5} segundos de preparacion`)
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+    });
+      document.body.style.overflow = 'hidden';
     }
     else{
       messageReader("Deteniendo rutina de ejercicios")
       clockPaused(timeOutID)
+      document.body.style.overflow = 'unset';
     }
   },[isAppRunning])
 
@@ -187,6 +193,8 @@ function App() {
     }
   }
 
+
+
   function clockRunning () {
     let timeOutID = setTimeout ( () => {
       setTimeLeft(timeLeft-1);
@@ -201,6 +209,8 @@ function App() {
     clearTimeout(timeOutID)
     setTimeLeft(timeLeft)
   }
+
+
 
 
   function checkIfInputsAreWriten () {
@@ -250,13 +260,14 @@ function App() {
         )}
         
         <div>
-          <button className='btn btnFull' onClick={handleStart}>START</button>
+          <button className='btn' onClick={handleStart}>START</button>
         </div>
 
         {isAppRunning && 
           <Modal 
             timeLeft={timeLeft}
             timeOutID={timeOutID}
+            clockRunning = {clockRunning}
             clockPaused = {clockPaused}
             currentExerciseName={currentExerciseName}
             setIsAppRunning={setIsAppRunning}/>
@@ -268,68 +279,3 @@ function App() {
 }
 
 export default App
-
-//import Modal from ".components/modal"
-
-
-//  useEffect ( () => {
-//     const workingOut = clockRunning()
-//     setTimeOutID(workingOut)
-//     let nextExercise
-//     let prepTime
-//     let nextExerciseDuration
-
-//     setCurrentExerciseName(exerciseCards[currentSet].exercisesData[currentExercise].name)
-
-
-//     if (currentSet === 0 & currentExercise === 0 & isFirstRead & isAppRunning){
-//         messageReader(`Tu primer ejercicio es ${currentExerciseName} por ${currentExerciseDuration} segundos. A darle con todo tigre`)
-//         setIsFirstRead(false)
-//     }
-
-//     if (timeLeft >= 0 & timeLeft <= 10){
-//       if (timeLeft === 10) {
-//         messageReader(`quedan ${timeLeft} segundos`)
-//       }
-//       else if (timeLeft >0 & timeLeft<= 5){
-//         messageReader(`${timeLeft}`)
-//       }
-//       else if (timeLeft === 0 & isExercise){ //exercise finished
-//         setCurrentExercise(currentExercise+1)
-//         setIsExercise(false)
-
-//         if (currentExercise+1<numberOfExercises){ //next exercise
-//           nextExercise = exerciseCards[currentSet].exercisesData[currentExercise+1].name;
-//           prepTime = exerciseCards[currentSet].exercisesData[currentExercise+1].preparation;
-//           nextExerciseDuration = exerciseCards[currentSet].exercisesData[currentExercise+1].duration;
-//           messageReader(`Haz terminado. Tu siguiente ejercicio es ${nextExercise} por ${nextExerciseDuration} segundos. Tienes ${prepTime} segundos de preparacion`)
-//           setTimeLeft(prepTime)
-//         }
-//         else if (currentExercise+1 >= numberOfExercises){ //next set
-//           setCurrentSet(currentSet+1)
-//           setCurrentExercise(0)
-//           if (currentSet+1 < numberOfSets){   
-//             nextExercise = exerciseCards[currentSet+1].exercisesData[0].name;
-//             prepTime = exerciseCards[currentSet+1].exercisesData[0].preparation;
-//             nextExerciseDuration = exerciseCards[currentSet+1].exercisesData[0].duration;
-//             messageReader(`Felicidades. Terminaste este set. Avanzando al siguiente set. Tu siguiente ejercicio es ${nextExercise} por ${nextExerciseDuration} segundos. Tienes ${prepTime} segundos de preparacion`)
-//             setTimeLeft(prepTime)
-//             let tmpNumberOfExercises = exerciseCards[currentSet+1].exercisesData.length;
-//             setNumberOfExercises(tmpNumberOfExercises)
-//           }
-//           else {
-//             messageReader(`Felicidades terminaste todos tus sets de ejercicios`)
-//             setTimeLeft(0)
-//             handleStop()
-//           }
-//         }
-//       }
-//       else if (timeLeft === 0 & !isExercise){ //prep time finished
-//         let ExerciseTime = exerciseCards[currentSet].exercisesData[currentExercise].duration;
-//         setTimeLeft(ExerciseTime)
-//         setIsExercise(true)
-//         messageReader(`Inicia`)
-
-//       }
-//     }   
-//   },[timeLeft]) 

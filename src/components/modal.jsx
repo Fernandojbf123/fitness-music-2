@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "../styles/modal.css"
 
-const Modal = ({timeLeft, timeOutID, clockPaused, currentExerciseName, setIsAppRunning}) => {
+const Modal = ({timeLeft, timeOutID, clockRunning, clockPaused, currentExerciseName, setIsAppRunning}) => {
 
   let [isPaused, setIsPaused] = useState(false)
 
@@ -10,20 +10,10 @@ const Modal = ({timeLeft, timeOutID, clockPaused, currentExerciseName, setIsAppR
       clockPaused(timeOutID)
     }
     else {
-      clockReStart
+      clockRunning(timeOutID)
     }
   },[isPaused])
-
-  function clockReStart (timeOutID) {
-    setTimeout ( () => {
-      setTimeLeft(timeLeft-1);
-    },[1000])
-    if (timeLeft <= 0) {
-      clearTimeout(timeOutID)
-    }
-    return timeOutID
-  }
-
+  
   return (
     <div className='modalbg activeBg'>
       <div className='modalWindow activeWindow'>
