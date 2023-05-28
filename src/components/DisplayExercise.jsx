@@ -12,6 +12,7 @@ const DisplayExercise = ({keyOfSet, keyOfExercise, idx, data, setData}) => {
     let copy = {...data}
     if (name.length > 3 & duration >= 5) {
       copy.exercisesData[keyOfExercise].isValid = true;
+      copy.exercisesData[keyOfExercise].name = name;
       return
     }
     copy.exercisesData[keyOfExercise].isValid = false;
@@ -22,6 +23,7 @@ const DisplayExercise = ({keyOfSet, keyOfExercise, idx, data, setData}) => {
     let copy = {...data}
     if (name.length > 3 & duration >= 5) {
       copy.exercisesData[keyOfExercise].isValid = true;
+      copy.exercisesData[keyOfExercise].duration = duration;
       return 
     }
     copy.exercisesData[keyOfExercise].isValid = false;
