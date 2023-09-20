@@ -1,45 +1,18 @@
-import React from 'react'
-import { useState } from 'react'
-import ErrorMsg from './errorMsg'
+import useFitness from "../hooks/useFitness"
 
-import "../styles/header.css"
+const Header = () => {
 
-const Header = ({data, setData, checkIfInputsAreWriten, isErrorActive, setIsErrorActive, errorMsg, setErrorMsg}) => {
-
-
-  let [isClicked, setIsClicked] = useState(false);
-
-  function handleAddSet () {
-    setIsClicked(true)
-      setTimeout ( () => {
-        setIsClicked(false)
-    },[200])
-    
-    let allFieldsValid = checkIfInputsAreWriten();
-    if (!allFieldsValid) {
-      setErrorMsg("Llena todos los campos antes de agregar un nuevo set")
-      setIsErrorActive(true)
-      return
-    }
-    let copy = {...data}
-    copy.addSet()
-    setData({...copy})
-    
-  }
+  const {handleAddSet} = useFitness()
 
   return (
-    <div className='header'>
-      <div className='headerTxt'>
-        <ErrorMsg 
-          errorMsg={errorMsg}
-          isErrorActive={isErrorActive}/>
-      </div>
-      <div className='headerBtn'>
+    <header className='fixed w-full h-[100px] px-5 bg-gradient-to-br from-violet-900 to-violet-800 flex justify-end items-center'>
+
         <button 
-          className={`btn transparent ${isClicked && `clicked`}`}
-          onClick = {e => handleAddSet (e)}>ADD SET</button>
-      </div>
-    </div>
+          className="w-[50px] h-[50px] text-center rounded-full bg-purple-400 active:scale-90"
+          onClick={handleAddSet}
+          >Add Set</button>
+
+    </header>
   )
 }
 

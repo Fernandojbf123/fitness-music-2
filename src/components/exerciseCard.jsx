@@ -1,95 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import DisplayExercise from './DisplayExercise'
 
-import "../styles/exerciseCard.css"
-import configImg from "../images/gear.png"
+import useFitness from "../hooks/useFitness";
+import ExerciseForm from "./ExerciseForm"
+import { useState } from "react";
 
-const ExerciseCard = ({keyOfSet, numberOfSet, data, setData}) =>  {
+const ExerciseCard = ({groupId}) =>  {
 
-    let [isClicked, setIsClicked] = useState(false);
-    let exercisesId = data.sets[keyOfSet].exercisesId;
-
-    useEffect ( () => {
-        //Card updater
-        if (data.sets[keyOfSet].exercisesId.length === 0 & Object.keys(data.sets).length > 1 ) {
-            let copy = {...data}
-            delete copy.sets[keyOfSet]
-            setData({...data})      
-        }
-    },[data])
-
-    function handleCopy(e) {
-        setIsClicked(true)
-        setTimeout ( () => {
-            setIsClicked(false)
-        },[200])
-        let copy = {...data}
-        copy.copySet(numberOfSet)
-        setData({...copy})
-    }
-
-    function handleAddExercise (e, keyOfSet) {
-        e.preventDefault()
-        let exercisesIdLength = data.sets[keyOfSet].exercisesId.length;
-        let newExerciseId = `${numberOfSet + 1}-${exercisesIdLength + 1}`
-        let copy = {...data}
-        copy.addExcercise(keyOfSet, newExerciseId)
-        setData({...copy})
-    }
-
-  return (
-    <div className='exerciseCard'>
+    const {data} = useFitness();
+    const exercisesData = data.exercisesData.filter( exercise => exercise.groupId === groupId)
     
-        <div className='cardHeader'>
-
-            <div className='cardHeaderSpace'>
-            </div>
-
-            <div className='cardHeaderName'>
-                SET Nº {numberOfSet + 1}
-            </div>
-        
-            <div className='cardHeaderBtn'>
-                <div>
+    return (
+        <div className='px-3'>
+            <header className='mt-2 flex flex-row items-center bg-pink-600 '>
+                <h2 className="w-1/2 text-center">{`SET Nº 1`}</h2> 
+                
+                <div className="w-1/2 p-2 flex justify-end">
                     <button
-                        className={`btn btncopy ${isClicked && "clicked"} `}
-                        onClick={e => handleCopy(e) }
+                        className="w-[50px] h-[50px] text-center rounded-full bg-purple-400 active:scale-90"
                         >Copy set
                     </button>
-                </div>    
-            </div>
+                </div>
+            </header>
 
-        </div>
-            
+            <section className="w-full bg-slate-300">
+                {exercisesData?.length>0 ? (     
+                    exercisesData?.map (exercise => (
+                        <ExerciseForm 
+                            key={exercise.id}
+                            exerciseData={exercise}
+                            />
+                    ))           
+                ):(
+                    null
+                )}
+            </section>
 
-        <div className='cardBody'>
-
-            {exercisesId.length > 0 && (
-                exercisesId.map( (exerciseId,idx) => {
-                    let keyOfExercise = exerciseId
-
-                    return(
-                        <DisplayExercise 
-                            key = {keyOfExercise}
-                            keyOfSet = {keyOfSet}
-                            keyOfExercise = {keyOfExercise}
-                            idx = {idx}
-                            data = {data}
-                            setData = {setData}
-                        />)
-                })
-             
-            )}
-
-            <button 
-                className='btn addMore'
-                onClick={ e => handleAddExercise(e, keyOfSet)}
+            <button
+                className="px-5 py-2 text-center rounded-full bg-purple-400 active:scale-90"
                 >ADD EXERCISE
             </button>
+
         </div>
-      
-    </div>
-  )
+    )
 }
 
 export default ExerciseCard
