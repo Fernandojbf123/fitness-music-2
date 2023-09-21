@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { initialData } from "../exampleData";
+import { generateId } from "../helpers/helper";
 const FitnessContext = createContext()
 
 const FitnessProvider = ({children}) => {
@@ -113,23 +114,93 @@ const FitnessProvider = ({children}) => {
         setData(updatedData)
       }
 
-      function handleDeleteExercise(e, id){
+      function handleDeleteExercise(e, id, groupId){
         e.preventDefault()
+        
+        const idx = data.sets.findIndex(set => set.id === groupId);
+        let {exercisesId: copyExercisesId} = data.sets[idx]
+        let updatedSets
+        let updatedExercisesData
+        let updatedExercisesId 
+        let updateSetOrders
+
         setTimeout ( () => {
-          if (data.exercisesData.length === 1 && data.sets.length === 1) {
-            setErrorMsg("There must be at least one item")
+          //verify there is at least 1 exercise
+          if (data.sets[idx].exercisesId.length === 1 && data.sets.length===1) {
+            setErrorMsg("There must be at least one exercise")
             return
           }
-          const updatedExercisesData = data.exercisesData.filter( exercise => exercise.id != id)
-          const updatedSets = data.sets.filter (set => set.exercisesId != id)
+
+          //verify that this is last exercise in the set (delete the set)
+          if (data.sets[idx].exercisesId.length === 1 && data.sets.length>1) {
+            console.log("ACA")
+            updatedSets = data.sets.filter( set => set.id != groupId)
+            updateSetOrders = data.setsOrder.filter( setId => setId != groupId)
+          }
+
+          //else there are more exercises in the set (delete the exercise)
+          else if (data.sets[idx].exercisesId.length>1 && data.sets.length>=1) { 
+            //update sets exercisesId
+            
+            updatedExercisesId = copyExercisesId.filter( exerciseId => exerciseId != id)
+            updatedSets = data.sets.map( set => {
+              if (set.id === groupId){
+                return {
+                  id: set.id,
+                  title: set.title,
+                  exercisesId: updatedExercisesId
+                }
+              }
+              return set
+            })
+            updateSetOrders = data.setsOrder
+          }
+
+          
+          //update exercisesData
+          updatedExercisesData = data.exercisesData.filter( exercise => exercise.id != id)
+
+          //update all data
           const updatedData = {
             sets: updatedSets,
             exercisesData: updatedExercisesData,
-            setsOrder: data.setsOrder
+            setsOrder: updateSetOrders
           }
 
-          setData(updatedData)
-        },200)
+          setData(updatedData) 
+
+        },100)
+      }
+
+      function handleAddExercise (e, groupId) {
+        
+        const newId = generateId();
+        //update exercisesData with new id
+        const newExercise = {
+          groupId, 
+          id: newId, 
+          name: "", 
+          duration: 30, 
+          preparation: 20, 
+          isValid: false,
+        }
+
+        let updatedExercisesData = [...data.exercisesData, newExercise];
+        
+
+        //update sets with new id
+        let idx = data.sets.findIndex( set => set.id === groupId);
+        let updatedSets = data.sets;
+        updatedSets[idx].exercisesId.push(newId)
+        
+        //update all data
+        const updatedData = {
+          sets: updatedSets,
+          exercisesData: updatedExercisesData,
+          setsOrder: data.setsOrder
+        }
+
+        setData(updatedData)
       }
     
 
@@ -142,7 +213,8 @@ const FitnessProvider = ({children}) => {
                 handleAddSet,
                 handleChangeExerciseDuration,
                 handleUpdateExercise,
-                handleDeleteExercise
+                handleDeleteExercise,
+                handleAddExercise
               }}
         >
             {children}

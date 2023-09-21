@@ -1,11 +1,10 @@
 
 import useFitness from "../hooks/useFitness";
 import ExerciseForm from "./ExerciseForm"
-import { useState } from "react";
 
 const ExerciseCard = ({groupId}) =>  {
 
-    const {data} = useFitness();
+    const {data, handleAddExercise} = useFitness();
     const exercisesData = data.exercisesData.filter( exercise => exercise.groupId === groupId)
     
     return (
@@ -27,6 +26,7 @@ const ExerciseCard = ({groupId}) =>  {
                         <ExerciseForm 
                             key={exercise.id}
                             exerciseData={exercise}
+                            groupId={groupId}
                             />
                     ))           
                 ):(
@@ -35,6 +35,7 @@ const ExerciseCard = ({groupId}) =>  {
             </section>
 
             <button
+                onClick={e => handleAddExercise(e,groupId)}
                 className="px-5 py-2 text-center rounded-full bg-purple-400 active:scale-90"
                 >ADD EXERCISE
             </button>

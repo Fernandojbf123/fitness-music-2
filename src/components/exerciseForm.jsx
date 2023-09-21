@@ -1,6 +1,6 @@
 import useFitness from "../hooks/useFitness"
 
-const ExerciseForm = ({exerciseData}) => {
+const ExerciseForm = ({exerciseData, groupId}) => {
 
   const {id, name, duration} = exerciseData;
   const {handleUpdateExercise, handleChangeExerciseDuration, handleDeleteExercise} = useFitness();
@@ -42,7 +42,7 @@ const ExerciseForm = ({exerciseData}) => {
       <div className='w-1/6 flex flex-row items-center justify-center'>
         <button
           className="w-[30px] h-[30px] bg-red-800 rounded-md text-white active:scale-90"
-          onClick={e => handleDeleteExercise(e, id)}
+          onClick={e => handleDeleteExercise(e, id, groupId)}
         >X</button>
       </div>
     </form>  

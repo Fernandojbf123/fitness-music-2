@@ -1,7 +1,7 @@
 let initialData = {
     sets: [
       {id: "asd", title: "set 1", exercisesId: ["123", "1234", "12345","123456","1234567"]},
-      {id: "asdf", title: "set 2", exercisesId: ["2", "22", "222","2222","22222"]},
+      {id: "asdf", title: "set 2", exercisesId: ["2","23"]},
     ],
     exercisesData:[
       {groupId:"asd", id:"123", name: "Saltar la cuerda", duration: 90, preparation: 20, isValid: false},
@@ -9,8 +9,10 @@ let initialData = {
       {groupId:"asd", id:"12345", name: "Flexiones", duration: 45, preparation: 20, isValid: false,},
       {groupId:"asd", id:"123456", name: "Plancha", duration: 45, preparation: 20, isValid: false,},
       {groupId:"asd", id:"1234567", name: "Descanso", duration: 90, preparation: 20, isValid: false,},
+      {groupId:"asdf", id:"2", name: "Saltar la cuerda", duration: 90, preparation: 20, isValid: false,},
+      {groupId:"asdf", id:"23", name: "Saltar la 1", duration: 90, preparation: 20, isValid: false,},
     ],
-    setsOrder: ["asd"],
+    setsOrder: ["asd","asdf"],
 
     // addExcercise: function (keyOfCurrentSet, newExerciseId) {
     //   this.sets[keyOfCurrentSet].exercisesId.push(newExerciseId);
