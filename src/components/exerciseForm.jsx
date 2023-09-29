@@ -7,11 +7,11 @@ const ExerciseForm = ({exerciseData, groupId}) => {
 
   return (
 
-    <form className='py-3 flex flew-row gap-2'>
-      <div className='w-3/6'>
+    <form className='py-3 flex flew-row gap-2 items-center'>
+      <div className='w-3/6 px-2'>
         <input
           name="name"
-          className="w-full"
+          className="w-full px-1"
           type='text'
           placeholder='add an exercise'
           value={name}
@@ -22,7 +22,7 @@ const ExerciseForm = ({exerciseData, groupId}) => {
       <div className='w-1/6'>
         <input
           name="duration"
-          className="w-full"
+          className="w-full text-center"
           type='number'
           placeholder="30"
           value={duration}
@@ -33,10 +33,10 @@ const ExerciseForm = ({exerciseData, groupId}) => {
       <div className='w-1/6 flex flex-row items-center justify-center gap-2'>
         <button 
           onClick={e => handleChangeExerciseDuration(e,id,+5)}
-          className='w-[30px] h-[30px] bg-pink-600 rounded-md active:scale-90'>{`+`}</button>
+          className='w-[30px] h-[30px] text-slate-200 font-bold flex justify-center items-center bg-pink-600 rounded-md active:scale-90'><span>{`+`}</span></button>
         <button 
           onClick={e => handleChangeExerciseDuration(e,id,-5)}
-          className='w-[30px] h-[30px] bg-pink-600 rounded-md active:scale-90'>{`-`}</button>
+          className='w-[30px] h-[30px] text-slate-200 font-bold bg-pink-600 rounded-md active:scale-90'>{`-`}</button>
       </div>
 
       <div className='w-1/6 flex flex-row items-center justify-center'>

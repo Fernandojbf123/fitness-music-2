@@ -8,7 +8,6 @@ function App() {
   const {data} = useFitness();
   const groups = data.sets;
 
-  console.log(data)
 
   return (
       <div className="min-h-screen flex flex-col">

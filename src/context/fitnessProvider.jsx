@@ -130,10 +130,9 @@ const FitnessProvider = ({children}) => {
             setErrorMsg("There must be at least one exercise")
             return
           }
-
+          console.log(data)
           //verify that this is last exercise in the set (delete the set)
           if (data.sets[idx].exercisesId.length === 1 && data.sets.length>1) {
-            console.log("ACA")
             updatedSets = data.sets.filter( set => set.id != groupId)
             updateSetOrders = data.setsOrder.filter( setId => setId != groupId)
           }
@@ -202,6 +201,39 @@ const FitnessProvider = ({children}) => {
 
         setData(updatedData)
       }
+
+      function handleCopySet (id) {      
+        console.log(data)
+        //find the number of the new set 
+        const numberOfSet = data.sets.length+1;
+        // generate id for the new gruop of exercises
+        const newGroupId = generateId();
+        // make a copy of exercises of the selected group and generate unique id for each exercise
+        let newExercisesData = data.exercisesData.filter ( exercise => exercise.groupId === id)
+        //this will change the id of the exercises and also their gruop id
+        let newExercisesDataWithNewIds = newExercisesData.map (exercise => {
+          const copyExercise = {...exercise} 
+          copyExercise.id = generateId();
+          copyExercise.groupId = newGroupId;
+           return copyExercise
+        })
+
+        //creat the new set
+        let newSet = {
+          id: newGroupId,
+          title: `set ${numberOfSet}`,
+          exercisesId: newExercisesDataWithNewIds.map( exercise => exercise.id)
+        }
+
+        //create the new data
+        let newData = {
+          sets: [...data.sets, newSet],
+          exercisesData: [...data.exercisesData, ...newExercisesDataWithNewIds],
+          setsOrder: [...data.setsOrder, newGroupId]
+        }
+        console.log(newData)
+        setData(newData)        
+      }
     
 
     return (
@@ -214,7 +246,8 @@ const FitnessProvider = ({children}) => {
                 handleChangeExerciseDuration,
                 handleUpdateExercise,
                 handleDeleteExercise,
-                handleAddExercise
+                handleAddExercise,
+                handleCopySet
               }}
         >
             {children}
