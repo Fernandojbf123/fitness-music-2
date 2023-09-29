@@ -6,11 +6,14 @@ const ExerciseCard = ({groupId}) =>  {
 
     const {data, handleAddExercise, handleCopySet} = useFitness();
     const exercisesData = data.exercisesData.filter( exercise => exercise.groupId === groupId)
-    
+    const idx = data.sets.findIndex(set => set.id === groupId)
+    const title = data.sets[idx].title;
+
+
     return (
         <div className='px-3'>
             <header className='mt-2 flex flex-row items-center bg-pink-600 rounded-t-md '>
-                <h2 className="w-1/2 text-center">{`SET Nº 1`}</h2> 
+                <h2 className="w-1/2 text-center uppercase">{title}</h2> 
                 
                 <div className="w-1/2 p-2 flex justify-end">
                     <button
