@@ -4,8 +4,8 @@ let initialData = {
       {id: "asdf", title: "set 2", exercisesId: ["2","23"]},
     ],
     exercisesData:[
-      {groupId:"asd", id:"123", name: "Saltar la cuerda", duration: 90, preparation: 20, isValid: false},
-      {groupId:"asd", id:"1234", name: "Sentadilla", duration: 60, preparation: 20, isValid: false,},
+      {groupId:"asd", id:"123", name: "Saltar la cuerda", duration: 5, preparation: 2, isValid: false},
+      {groupId:"asd", id:"1234", name: "Sentadilla", duration: 5, preparation: 2, isValid: false,},
       {groupId:"asd", id:"12345", name: "Flexiones", duration: 45, preparation: 20, isValid: false,},
       {groupId:"asd", id:"123456", name: "Plancha", duration: 45, preparation: 20, isValid: false,},
       {groupId:"asd", id:"1234567", name: "Descanso", duration: 90, preparation: 20, isValid: false,},

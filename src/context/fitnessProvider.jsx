@@ -66,6 +66,8 @@ const FitnessProvider = ({children}) => {
       const [timeLeft, setTimeLeft] = useState();
       const [isModalActive,setIsModalActive] = useState(false)
       const [currentExerciseIdx, setCurrentExerciseIdx] = useState(0)
+      const [timer, setTimer] = useState({});
+      const [isTimerRunning, setIsTimerRunning] = useState(false)
 
 
       // **** Functions of CRUD exercises *****  //
@@ -324,7 +326,26 @@ const FitnessProvider = ({children}) => {
       //quedé aca haciendo la lógica del loop
       function looper (time) {
         const timer = new Timer(time)
+        setTimer(timer)
         setTimeLeft(timer.getCounter()) 
+        timer.play()
+        setIsTimerRunning(true)
+      }
+
+      function handlePausePlay () {
+        console.log(timer.getRunning())
+        if (timer.getRunning()){
+          timer.pause()
+          setIsTimerRunning(false)
+          return
+        }
+        timer.play()
+        setIsTimerRunning(true)       
+      }
+
+      function handleRestartTimer (){
+        timer.pause()
+        timer.setCounter(5)
         timer.play()
       }
 
@@ -339,6 +360,7 @@ const FitnessProvider = ({children}) => {
                 isModalActive,
                 timeLeft,
                 currentExerciseIdx,
+                isTimerRunning,
                 handleAddSet,
                 handleChangeExerciseDuration,
                 handleUpdateExercise,
@@ -347,7 +369,10 @@ const FitnessProvider = ({children}) => {
                 handleCopySet,
                 handleStart,
                 looper,
-                setCurrentExerciseIdx
+                setCurrentExerciseIdx,
+                handlePausePlay,
+                handleRestartTimer,
+                
               }}
         >
             {children}
