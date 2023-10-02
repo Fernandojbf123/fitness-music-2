@@ -63,6 +63,9 @@ const FitnessProvider = ({children}) => {
 
       const [data, setData] = useState(initialData)
       const [errorMsg, setErrorMsg] = useState("")
+      const [timeLeft, setTimeLeft] = useState();
+      const [isModalActive,setIsModalActive] = useState(false)
+      const [currentExerciseIdx, setCurrentExerciseIdx] = useState(0)
 
 
       // **** Functions of CRUD exercises *****  //
@@ -233,7 +236,7 @@ const FitnessProvider = ({children}) => {
         let allFieldsValid = true;
         let newExerciseData = exercisesData.map ( exercise => {
           let exerciseCopy = {...exercise}
-          if (exerciseCopy.name == "" || isBlank(exerciseCopy.name) ||exerciseCopy.duration <15 ){
+          if (exerciseCopy.name == "" || isBlank(exerciseCopy.name) ||exerciseCopy.duration <5 ){
             allFieldsValid = false
             return exerciseCopy
           }
@@ -255,6 +258,77 @@ const FitnessProvider = ({children}) => {
         setErrorMsg("")
       }
 
+      // ***** timer class ***** //
+
+      class Timer{
+        constructor(counter){
+          this.setCounter(counter)
+          this.running = false;
+          this.instante = this;
+        }
+
+        setCounter(counter) {
+          this.counter = counter
+        }
+        getCounter() {
+          return this.counter;
+        }
+
+        getRunning() {
+          return this.running;
+        }
+        
+        getTimerId (){
+          return this.timerId
+        }
+
+        play() {
+          if (this.running){
+            return
+          }
+          this.running = true;
+          this.timerId = setInterval( () => {
+            this.setCounter(this.counter-1)
+            this.getCounter()
+            setTimeLeft(this.getCounter())
+            
+            if (this.counter === 0){
+              this.pause()
+            }
+          },1000)
+        }
+
+        pause () {
+          if (!this.running){
+            return
+          }
+          this.running = false;
+          clearInterval(this.timerId)
+        }
+      }
+        
+        
+
+      // **** START **** //
+
+      function handleStart (){
+        checkIfInputsAreWriten()
+        setIsModalActive(true)
+        setCurrentExerciseIdx(0)
+        let initialTime = data.exercisesData[currentExerciseIdx].preparation;
+        console.log(initialTime)
+        looper(initialTime)
+
+      }
+
+      //quedé aca haciendo la lógica del loop
+      function looper (time) {
+        const timer = new Timer(time)
+        setTimeLeft(timer.getCounter()) 
+        timer.play()
+      }
+
+
     return (
 
         <FitnessContext.Provider
@@ -262,13 +336,18 @@ const FitnessProvider = ({children}) => {
               { 
                 data,
                 errorMsg,
+                isModalActive,
+                timeLeft,
+                currentExerciseIdx,
                 handleAddSet,
                 handleChangeExerciseDuration,
                 handleUpdateExercise,
                 handleDeleteExercise,
                 handleAddExercise,
                 handleCopySet,
-                checkIfInputsAreWriten
+                handleStart,
+                looper,
+                setCurrentExerciseIdx
               }}
         >
             {children}

@@ -1,42 +1,44 @@
-import React, { useEffect, useState } from 'react'
-import "../styles/modal.css"
+import { useEffect, useState } from "react"
+import useFitness from "../hooks/useFitness";
 
-const Modal = ({timeLeft, timeOutID, clockRunning, clockPaused, currentExerciseName, setIsAppRunning}) => {
+const Modal = () => {
 
-  let [isPaused, setIsPaused] = useState(false)
-
-  useEffect ( () => {
-    if (isPaused){
-      clockPaused(timeOutID)
-    }
-    else {
-      clockRunning(timeOutID)
-    }
-  },[isPaused])
+  const {timeLeft, looper, data, currentExerciseIdx, setCurrentExerciseIdx} = useFitness();
+  const [status, setStatus] = useState("preparation") 
   
+  useEffect ( () => { 
+    if (timeLeft === 0 && status === "workout" && currentExerciseIdx=== data.exercisesData.length-1){
+      console.log("Terminaste felicidades")
+      return
+    }
+
+    else if (timeLeft===0 && status === "workout" && currentExerciseIdx<data.exercisesData.length-1){
+      setStatus("preparation")
+      setCurrentExerciseIdx( () => currentExerciseIdx+1)
+      let initialTime = data.exercisesData[currentExerciseIdx].preparation
+      looper(initialTime)
+     }
+
+   else if (timeLeft===0 && status === "preparation"){
+    setStatus("workout")
+    let initialTime = data.exercisesData[currentExerciseIdx].duration
+    looper(initialTime)
+   }
+  },[timeLeft, status])
+  
+  // QUEDÉ ACÁ ARREGLANDO QUE FUNCIONEN LOS BOTONES DE PAUSA Y RESET
+
   return (
-    <div className='modalbg activeBg'>
-      <div className='modalWindow activeWindow'>
-            <div className='innerArea1'>
-                {timeLeft}
-            </div>
+    <div className="w-screen min-h-screen bg-pink-300/50 z-20 absolute top-0 left-0 flex justify-center items-center">
+      <div className="w-[80%] h-[300px] bg-purple-600 rounded-md flex flex-col justify-center items-center">
+          <div className="flex-1 w-full flex justify-center items-center">
+            <p className="w-1/2 h-1/2 border-2 border-white rounded-full">{timeLeft}</p>
+          </div>
 
-            <div className='innerArea2'>{currentExerciseName}</div>
-
-            <div className='innerArea3'>
-                <button 
-                  className='btn btnFull'
-                  onClick={ e => setIsPaused(!isPaused)}  
-                  >{isPaused? "PLAY" : "PAUSE"}
-                  </button>
-
-                <button 
-                  className='btn btnFull'
-                  onClick={ e => setIsAppRunning(false)}  
-                  >STOP
-                </button>
-            </div>
-
+          <div className="flex gap-5 mb-5 [&>button]:bg-slate-200 [&>button]:px-2 [&>button]:py-1 [&>button]:rounded-md">
+            <button>pause</button>
+            <button>reset</button>
+          </div>
       </div>
     </div>
   )

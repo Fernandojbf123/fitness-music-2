@@ -1,16 +1,18 @@
 import ExerciseCard from "./components/exerciseCard"
 import Header from "./components/header"
 import useFitness from "./hooks/useFitness";
-
+import Modal from "./components/modal";
 
 function App() {
 
-  const {data} = useFitness();
+  const {data,isModalActive, timeLeft} = useFitness();
   const groups = data.sets;
 
 
   return (
       <div className="min-h-screen flex flex-col">
+        
+        
         <Header />  
 
         <main className="mt-[100px] bg-gradient-to-br from-purple-700 to-violet-800 flex-grow">
@@ -29,7 +31,9 @@ function App() {
           )
         }   
         </main>
-
+      
+      {isModalActive && <Modal/>   }
+      
           
       </div>
   )
