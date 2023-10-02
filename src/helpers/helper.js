@@ -3,3 +3,7 @@ export function generateId(){
     const date   = Date.now().toString(36)
     return random + date;
 }
+
+export function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+}

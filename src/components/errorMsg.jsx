@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react'
-import "../Styles/errorMsg.css"
-
-const ErrorMsg = ({errorMsg, isErrorActive}) => {
+const ErrorMsg = ({errorMsg}) => {
 
   return (
 
-    isErrorActive && 
-        <div className='errorMsg'>
+        <div className='m-1 p-2 text-slate-200 font-bold bg-red-800 rounded-md'>
             {errorMsg}
         </div>
   )

@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { initialData } from "../exampleData";
-import { generateId } from "../helpers/helper";
+import { generateId, isBlank } from "../helpers/helper";
 const FitnessContext = createContext()
 
 const FitnessProvider = ({children}) => {
@@ -60,22 +60,12 @@ const FitnessProvider = ({children}) => {
       //   }
       // }
       
-      // function checkIfInputsAreWriten () {
-      //   let allFieldsValid = true;
-      //   let numberOfExercises = Object.keys(data.exercisesData).length
-      //   let exercisesKeys = Object.keys(data.exercisesData)
-      //   for (let i = 0; i< numberOfExercises; i++) {
-      //     if (!data.exercisesData[exercisesKeys[i]].isValid) {
-      //       allFieldsValid = false
-      //       return allFieldsValid        
-      //     }
-      //   }
-      //   return allFieldsValid
-      // }
 
       const [data, setData] = useState(initialData)
       const [errorMsg, setErrorMsg] = useState("")
 
+
+      // **** Functions of CRUD exercises *****  //
       function handleAddSet() {
         console.log("adding set")
       }
@@ -97,6 +87,7 @@ const FitnessProvider = ({children}) => {
         
       }
       
+      //update exercise
       function handleUpdateExercise (e,id) {
         e.preventDefault()
         let copyExercisesData = data.exercisesData.map( exercise => {
@@ -114,6 +105,7 @@ const FitnessProvider = ({children}) => {
         setData(updatedData)
       }
 
+      //delete exercise
       function handleDeleteExercise(e, id, groupId){
         e.preventDefault()
         
@@ -130,7 +122,6 @@ const FitnessProvider = ({children}) => {
             setErrorMsg("There must be at least one exercise")
             return
           }
-          console.log(data)
           //verify that this is last exercise in the set (delete the set)
           if (data.sets[idx].exercisesId.length === 1 && data.sets.length>1) {
             updatedSets = data.sets.filter( set => set.id != groupId)
@@ -171,6 +162,7 @@ const FitnessProvider = ({children}) => {
         },100)
       }
 
+      //add exercise
       function handleAddExercise (e, groupId) {
         
         const newId = generateId();
@@ -202,8 +194,8 @@ const FitnessProvider = ({children}) => {
         setData(updatedData)
       }
 
+      //copy a set of exercise
       function handleCopySet (id) {      
-        console.log(data)
         //find the number of the new set 
         const numberOfSet = data.sets.length+1;
         // generate id for the new gruop of exercises
@@ -231,10 +223,37 @@ const FitnessProvider = ({children}) => {
           exercisesData: [...data.exercisesData, ...newExercisesDataWithNewIds],
           setsOrder: [...data.setsOrder, newGroupId]
         }
-        console.log(newData)
         setData(newData)        
       }
     
+
+      //**** Functions to check forms ****//
+      function checkIfInputsAreWriten () {
+        const {exercisesData} = data;
+        let allFieldsValid = true;
+        let newExerciseData = exercisesData.map ( exercise => {
+          let exerciseCopy = {...exercise}
+          if (exerciseCopy.name == "" || isBlank(exerciseCopy.name) ||exerciseCopy.duration <15 ){
+            allFieldsValid = false
+            return exerciseCopy
+          }
+          exerciseCopy.isValid = true;
+          return exerciseCopy
+        })
+
+        if (!allFieldsValid){
+          setErrorMsg("All exercises field are mandatory")
+          setTimeout ( () =>{
+            setErrorMsg("")
+          },5000)
+          return
+        }
+
+        let newData = {...data}
+        newData.exercisesData = newExerciseData;
+        setData({...newData})
+        setErrorMsg("")
+      }
 
     return (
 
@@ -242,12 +261,14 @@ const FitnessProvider = ({children}) => {
             value={
               { 
                 data,
+                errorMsg,
                 handleAddSet,
                 handleChangeExerciseDuration,
                 handleUpdateExercise,
                 handleDeleteExercise,
                 handleAddExercise,
-                handleCopySet
+                handleCopySet,
+                checkIfInputsAreWriten
               }}
         >
             {children}

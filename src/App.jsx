@@ -30,9 +30,7 @@ function App() {
         }   
         </main>
 
-        <div>
-          <button className='btn'>{`START`}</button>
-        </div>     
+          
       </div>
   )
 }
