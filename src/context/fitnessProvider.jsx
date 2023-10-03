@@ -5,62 +5,6 @@ const FitnessContext = createContext()
 
 const FitnessProvider = ({children}) => {
 
-    // function startMsgReader () {
-    //     let msg = new SpeechSynthesisUtterance();
-    //     let voices = window.speechSynthesis.getVoices();
-    //     msg.voice = voices[9]; 
-    //     msg.volume = 1; // From 0 to 1
-    //     msg.rate = 1; // From 0.1 to 10
-    //     msg.pitch = 0; // From 0 to 2
-    //     msg.lang = 'es-mx';
-    //     return msg
-    //   }
-    
-    //   function messageReader (textToRead) {  
-    //     msg.text = textToRead
-    //     speechSynthesis.speak(msg);
-    //   }
-    
-    //   function decreaseSongVolume () {
-    //     let currentSong = document.getElementById("song");
-    //     currentSong.volume = 0.2;
-    //   }
-    
-    //   function raiseSongVolume () {
-    //     let currentSong = document.getElementById("song");
-    //     currentSong.volume = 0.8;
-    //   }
-      
-      // function handleStart () {    
-      //   //check that all fields are ok
-      //   let allFieldsValid = checkIfInputsAreWriten();
-        
-      //   if (!allFieldsValid){
-      //     //ADD ERROR MESSAGE
-      //     setErrorMsg("El tiempo debe ser mayor a 5 segs y debes llenar todos los campos antes de empezar")
-      //     setAreFieldsEmpty(true)
-      //     setIsErrorActive(true)
-      //   }
-      //   else {
-      //     setIsAppRunning(true)
-      //     setNumberOfSets(Object.keys(data.sets).length)
-      //     setCurrentSet(0)
-      //     setCurrentSetId(data.setsOrder[0])
-      //     setCurrentExercise(0)
-      //     let tmpCurrentSet = data.setsOrder[0];
-      //     let tmpCurrentExerciseId = data.sets[tmpCurrentSet].exercisesId[0]
-      //     let tmpTimeLeft = data.exercisesData[tmpCurrentExerciseId].preparation;
-      //     setTimeLeft(tmpTimeLeft+5)
-      //     setIsExercise(false)
-      //     setIsErrorActive(false)
-      //     setCurrentExerciseId(tmpCurrentExerciseId)
-      //     setCurrentExerciseName(data.exercisesData[tmpCurrentExerciseId].name)
-      //     setCurrentExerciseDuration(data.exercisesData[tmpCurrentExerciseId].duration)
-      //     setNumberOfExercisesOfSet(data.sets[tmpCurrentSet].exercisesId.length)
-      //   }
-      // }
-      
-
       const [data, setData] = useState(initialData)
       const [errorMsg, setErrorMsg] = useState("")
       const [timeLeft, setTimeLeft] = useState();
@@ -68,6 +12,7 @@ const FitnessProvider = ({children}) => {
       const [currentExerciseIdx, setCurrentExerciseIdx] = useState(0)
       const [timer, setTimer] = useState({});
       const [isTimerRunning, setIsTimerRunning] = useState(false)
+      const [msgReader, setMsgReader] = useState({})
 
 
       // **** Functions of CRUD exercises *****  //
@@ -308,22 +253,48 @@ const FitnessProvider = ({children}) => {
           clearInterval(this.timerId)
         }
       }
-        
-        
 
-      // **** START **** //
+      //**** voice and music functions*****//
+      class MsgReader {
+        constructor(){
+          this.msg = new SpeechSynthesisUtterance();
+          this.voices = window.speechSynthesis.getVoices();
+          this.msg.voice = this.voices[0]; 
+          this.msg.volume = 1; // From 0 to 1
+          this.msg.rate = 1; // From 0.1 to 10
+          this.msg.pitch = 0; // From 0 to 2
+          this.msg.lang = 'es-mx';
+        }
+
+        messageReader (textToRead) {
+          this.msg.text = textToRead
+          speechSynthesis.speak(this.msg)
+        }
+        
+        decreaseSongVolume () {
+          this.currentSong = document.getElementById("song");
+          this.currentSong.volume = 0.2;
+        }
+        raiseSongVolume () {
+          this.currentSong = document.getElementById("song");
+          this.currentSong.volume = 0.8;
+        }  
+        
+      }
+    
+      // **** button's handlers to control timer **** //
 
       function handleStart (){
         checkIfInputsAreWriten()
         setIsModalActive(true)
         setCurrentExerciseIdx(0)
         let initialTime = data.exercisesData[currentExerciseIdx].preparation;
-        console.log(initialTime)
         looper(initialTime)
-
+        let voice = new MsgReader()
+        voice.messageReader("Iniciando rutina de ejercicios")
+        setMsgReader(voice)
       }
 
-      //quedé aca haciendo la lógica del loop
       function looper (time) {
         const timer = new Timer(time)
         setTimer(timer)
@@ -333,7 +304,6 @@ const FitnessProvider = ({children}) => {
       }
 
       function handlePausePlay () {
-        console.log(timer.getRunning())
         if (timer.getRunning()){
           timer.pause()
           setIsTimerRunning(false)
@@ -349,6 +319,13 @@ const FitnessProvider = ({children}) => {
         timer.play()
       }
 
+      function handleCloseModal () {
+        setIsModalActive(false)
+        timer.pause()
+      }
+        
+      
+
 
     return (
 
@@ -361,6 +338,7 @@ const FitnessProvider = ({children}) => {
                 timeLeft,
                 currentExerciseIdx,
                 isTimerRunning,
+                msgReader,
                 handleAddSet,
                 handleChangeExerciseDuration,
                 handleUpdateExercise,
@@ -372,6 +350,7 @@ const FitnessProvider = ({children}) => {
                 setCurrentExerciseIdx,
                 handlePausePlay,
                 handleRestartTimer,
+                handleCloseModal,
                 
               }}
         >
