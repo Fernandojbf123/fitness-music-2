@@ -11,7 +11,7 @@ const Modal = () => {
   useEffect ( () => { 
     //Ending
     if (timeLeft === 0 && status === "workout" && currentExerciseIdx=== data.exercisesData.length-1){
-      console.log("Terminaste felicidades")
+      msgReader.messageReader(`FELICIDADES TERMINASTE TODOS TUS SETS DE EJERCICIOS`)
       setFinishRutine(true)
       return
     }
@@ -21,14 +21,14 @@ const Modal = () => {
       setCurrentExerciseIdx( () => currentExerciseIdx+1)
       let initialTime = data.exercisesData[currentExerciseIdx].preparation
       looper(initialTime)     
-      msgReader.messageReader(`Inicia preparación`)
+      msgReader.messageReader(`Tienes ${initialTime} segundos de preparación`)
      }
     //switching status to workout and restarting timer
    else if (timeLeft===0 && status === "preparation"){
     setStatus("workout")
     let initialTime = data.exercisesData[currentExerciseIdx].duration
     looper(initialTime)
-    msgReader.messageReader(`Inicia ejercicio`)
+    msgReader.messageReader(`Realiza ${initialTime} segundos de este ejercicio`)
     if (currentExerciseIdx>=1){
       setCurrentExerciseName(data.exercisesData[currentExerciseIdx].name)
     }
@@ -36,7 +36,7 @@ const Modal = () => {
 
     //read msg when reaching 10 segs
     if (timeLeft === 10 && status === "preparation"){
-      msgReader.messageReader("10 segundos")
+      msgReader.messageReader("quedan 10 segundos")
       if (currentExerciseIdx+1 > data.exercisesData.length-1){
         return
       }

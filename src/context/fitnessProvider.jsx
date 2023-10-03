@@ -259,9 +259,9 @@ const FitnessProvider = ({children}) => {
         constructor(){
           this.msg = new SpeechSynthesisUtterance();
           this.voices = window.speechSynthesis.getVoices();
-          this.msg.voice = this.voices[0]; 
+          this.msg.voice = this.voices[9]; 
           this.msg.volume = 1; // From 0 to 1
-          this.msg.rate = 1; // From 0.1 to 10
+          this.msg.rate = 1.7; // From 0.1 to 10
           this.msg.pitch = 0; // From 0 to 2
           this.msg.lang = 'es-mx';
         }
@@ -292,6 +292,7 @@ const FitnessProvider = ({children}) => {
         looper(initialTime)
         let voice = new MsgReader()
         voice.messageReader("Iniciando rutina de ejercicios")
+        voice.messageReader(`Tienes ${initialTime} segundos de preparación y tu primer ejercicio es ${data.exercisesData[currentExerciseIdx].name}`)
         setMsgReader(voice)
       }
 
