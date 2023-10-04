@@ -12,7 +12,7 @@ const ExerciseCard = ({groupId}) =>  {
     return (
         <div className=''>
             <header className='mt-2 flex flex-row items-center bg-green-600 rounded-t-md '>
-                <h2 className="w-1/2 text-2xl font-bold text-gray-800 text-center uppercase">{title}</h2> 
+                <h2 className="w-1/2 text-3xl font-bold text-slate-100 text-center uppercase">{title}</h2> 
                 
                 <div className="w-1/2 p-2 flex justify-end">
                     <button
