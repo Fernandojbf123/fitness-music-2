@@ -13,11 +13,37 @@ const FitnessProvider = ({children}) => {
       const [timer, setTimer] = useState({});
       const [isTimerRunning, setIsTimerRunning] = useState(false)
       const [msgReader, setMsgReader] = useState({})
+      const [status, setStatus] = useState("preparation") 
+
 
 
       // **** Functions of CRUD exercises *****  //
       function handleAddSet() {
-        console.log("adding set")
+        let newGroupId = generateId();
+        let newExerciseId = generateId();
+        let numberOfSets = data.sets.length;
+        
+        let newSet = {
+          id: newGroupId, 
+          title: `set ${numberOfSets+1}`, 
+          exercisesId: [newExerciseId],
+        }
+        
+        let newExercisesData = {
+                                groupId: newGroupId,
+                                id: newExerciseId, 
+                                name: "", 
+                                duration: 30, 
+                                preparation: 20, 
+                                isValid: false
+                              }
+        let newData = {
+          sets: [...data.sets, newSet],
+          exercisesData: [...data.exercisesData, newExercisesData],
+          setsOrder: [...data.setsOrder, newGroupId]
+        }
+        console.log(newData)
+        setData(newData)
       }
 
       function handleChangeExerciseDuration(e,id,value) {
@@ -261,7 +287,7 @@ const FitnessProvider = ({children}) => {
           this.voices = window.speechSynthesis.getVoices();
           this.msg.voice = this.voices[9]; 
           this.msg.volume = 1; // From 0 to 1
-          this.msg.rate = 1.7; // From 0.1 to 10
+          this.msg.rate = 1.6; // From 0.1 to 10
           this.msg.pitch = 0; // From 0 to 2
           this.msg.lang = 'es-mx';
         }
@@ -318,6 +344,7 @@ const FitnessProvider = ({children}) => {
         timer.pause()
         timer.setCounter(5)
         timer.play()
+        setStatus("restarting")
       }
 
       function handleCloseModal () {
@@ -340,6 +367,8 @@ const FitnessProvider = ({children}) => {
                 currentExerciseIdx,
                 isTimerRunning,
                 msgReader,
+                status,
+                setStatus,
                 handleAddSet,
                 handleChangeExerciseDuration,
                 handleUpdateExercise,

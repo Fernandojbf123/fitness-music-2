@@ -10,14 +10,14 @@ const ExerciseCard = ({groupId}) =>  {
     const title = data.sets[idx].title;
 
     return (
-        <div className='px-3'>
-            <header className='mt-2 flex flex-row items-center bg-pink-600 rounded-t-md '>
-                <h2 className="w-1/2 text-center uppercase">{title}</h2> 
+        <div className=''>
+            <header className='mt-2 flex flex-row items-center bg-green-600 rounded-t-md '>
+                <h2 className="w-1/2 text-2xl font-bold text-gray-800 text-center uppercase">{title}</h2> 
                 
                 <div className="w-1/2 p-2 flex justify-end">
                     <button
                         onClick={e => handleCopySet(groupId)}
-                        className="w-[50px] h-[50px] text-center rounded-full bg-purple-400 active:scale-90"
+                        className="w-[50px] h-[50px] text-gray-800 font-bold text-center rounded-full bg-slate-200 active:scale-90 active:bg-green-200"
                         >Copy set
                     </button>
                 </div>
@@ -39,7 +39,7 @@ const ExerciseCard = ({groupId}) =>  {
 
             <button
                 onClick={e => handleAddExercise(e,groupId)}
-                className="px-5 py-2 text-center rounded-full bg-purple-400 active:scale-90"
+                className="px-5 py-2 text-center text-gray-800 font-bold rounded-full bg-slate-200 active:scale-90"
                 >ADD EXERCISE
             </button>
 

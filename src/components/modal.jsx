@@ -3,29 +3,37 @@ import useFitness from "../hooks/useFitness";
 
 const Modal = () => {
 
-  const {data, timeLeft, currentExerciseIdx, isTimerRunning, msgReader, looper, setCurrentExerciseIdx, handlePausePlay, handleRestartTimer, handleCloseModal} = useFitness();
-  const [status, setStatus] = useState("preparation") 
+  const {data, timeLeft, currentExerciseIdx, isTimerRunning, msgReader, status, setStatus, looper, setCurrentExerciseIdx, handlePausePlay, handleRestartTimer, handleCloseModal} = useFitness();
   const [currentExerciseName, setCurrentExerciseName] = useState(data.exercisesData[currentExerciseIdx].name);
   const [finishRutine, setFinishRutine] = useState(false)
 
   useEffect ( () => { 
+    //restarting
+    if (timeLeft === 0 && status==="restarting"){
+      setStatus("preparation")
+      let initialTime = data.exercisesData[currentExerciseIdx].preparation
+      looper(initialTime)     
+      msgReader.messageReader(`Reiniciando, tienes ${initialTime} segundos de preparación`)
+      return
+    }
+
     //Ending
-    if (timeLeft === 0 && status === "workout" && currentExerciseIdx=== data.exercisesData.length-1){
+    if (timeLeft === 0 && status === "ejercitando" && currentExerciseIdx=== data.exercisesData.length-1){
       msgReader.messageReader(`FELICIDADES TERMINASTE TODOS TUS SETS DE EJERCICIOS`)
       setFinishRutine(true)
       return
     }
     //switching status to preparation and restarting timer
-    else if (timeLeft===0 && status === "workout" && currentExerciseIdx<data.exercisesData.length-1){
+    else if (timeLeft===0 && status === "ejercitando" && currentExerciseIdx<data.exercisesData.length-1){
       setStatus("preparation")
       setCurrentExerciseIdx( () => currentExerciseIdx+1)
       let initialTime = data.exercisesData[currentExerciseIdx].preparation
       looper(initialTime)     
       msgReader.messageReader(`Tienes ${initialTime} segundos de preparación`)
      }
-    //switching status to workout and restarting timer
+    //switching status to workingout and restarting timer
    else if (timeLeft===0 && status === "preparation"){
-    setStatus("workout")
+    setStatus("ejercitando")
     let initialTime = data.exercisesData[currentExerciseIdx].duration
     looper(initialTime)
     msgReader.messageReader(`Realiza ${initialTime} segundos de este ejercicio`)
@@ -49,8 +57,6 @@ const Modal = () => {
       msgReader.messageReader(timeLeft)
     }
 
-
-
   },[timeLeft, status])
   
   useEffect (()=> {
@@ -61,8 +67,8 @@ const Modal = () => {
   
 
   return (
-    <div className="w-screen min-h-screen bg-pink-300/50 z-20 absolute top-0 left-0 flex justify-center items-center">
-      <div className="w-[80%] h-[300px] bg-purple-600 rounded-md relative flex flex-col justify-center items-center">
+    <div className="w-screen min-h-screen bg-slate-900/50 z-20 absolute top-0 left-0 flex justify-center items-center">
+      <div className="w-[80%] md:w-1/2 h-[300px] md:h-[600px] bg-gradient-to-br from-green-600/70 to-slate-800/70 rounded-md relative flex flex-col justify-center items-center">
           
           {finishRutine ? (
 
@@ -79,7 +85,7 @@ const Modal = () => {
           ):(
             <>
               <div className="flex-1 w-full flex justify-center items-center">
-                <div className="w-1/2 aspect-square border-2 border-white rounded-full flex flex-col justify-center items-center">
+                <div className="w-1/2 md:w-2/5 my-5 aspect-square border-2 border-white rounded-full flex flex-col justify-center items-center">
                     <p className="text-5xl text-slate-200 font-bold">{timeLeft}</p>
                     <p className="text-slate-200 font-bold">{currentExerciseName}</p>
                     <p className="text-slate-200 ">{status}</p>

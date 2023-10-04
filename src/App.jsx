@@ -10,32 +10,32 @@ function App() {
 
 
   return (
-      <div className="min-h-screen flex flex-col">
-        
-        
-        <Header />  
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-700 to-gray-900">
 
-        <main className="mt-[100px] bg-gradient-to-br from-purple-700 to-violet-800 flex-grow">
-          {groups?.length>0 ? ( 
+      <div className="md:w-1/3 md:mx-auto">
+        <Header />
 
-            groups?.map ( group => (
-              <ExerciseCard 
+        <main className="mt-[100px] flex-grow">
+          {groups?.length > 0 ? (
+
+            groups?.map(group => (
+              <ExerciseCard
                 key={group.id}
                 groupId={group.id}
-                data={data}/>
-              
+                data={data} />
+
             ))
-          
-          ):(
+
+          ) : (
             null
           )
-        }   
+          }
         </main>
-      
-      {isModalActive && <Modal/>   }
-      
-          
+
+        {isModalActive && <Modal />}
       </div>
+
+    </div>
   )
 }
 

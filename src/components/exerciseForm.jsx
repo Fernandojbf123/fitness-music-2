@@ -33,10 +33,10 @@ const ExerciseForm = ({exerciseData, groupId}) => {
       <div className='w-1/6 flex flex-row items-center justify-center gap-2'>
         <button 
           onClick={e => handleChangeExerciseDuration(e,id,+5)}
-          className='w-[30px] h-[30px] text-slate-200 font-bold flex justify-center items-center bg-pink-600 rounded-md active:scale-90'><span>{`+`}</span></button>
+          className='w-[30px] h-[30px] text-slate-200 font-bold flex justify-center items-center bg-green-700 rounded-md active:scale-90'><span>{`+`}</span></button>
         <button 
           onClick={e => handleChangeExerciseDuration(e,id,-5)}
-          className='w-[30px] h-[30px] text-slate-200 font-bold bg-pink-600 rounded-md active:scale-90'>{`-`}</button>
+          className='w-[30px] h-[30px] text-slate-200 font-bold bg-green-700 rounded-md active:scale-90'>{`-`}</button>
       </div>
 
       <div className='w-1/6 flex flex-row items-center justify-center'>
